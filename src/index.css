@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #1f2937;
+    --primary: #ffffff;
+    --primary-foreground: #1f2937;
+    --secondary: #f0f0f0;
+    --secondary-foreground: #6b7280;
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+    --border: #e5e7eb;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --gradient-start: #3b82f6;
+    --gradient-end: #8b5cf6;
+  }
+
+  .dark {
+    --background: #020617;
+    --foreground: #f8fafc;
+    --primary: #0f172a;
+    --primary-foreground: #f8fafc;
+    --secondary: #1e293b;
+    --secondary-foreground: #94a3b8;
+    --accent: #60a5fa;
+    --accent-foreground: #020617;
+    --border: #1e293b;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --gradient-start: #1e3a8a;
+    --gradient-end: #5b21b6;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-foreground;
+  }
+
+  h1 { @apply text-4xl mb-6; }
+  h2 { @apply text-3xl mb-4; }
+  h3 { @apply text-2xl mb-3; }
+  h4 { @apply text-xl mb-2; }
+  h5 { @apply text-lg mb-2; }
+
+  p { @apply mb-4 text-secondary-foreground; }
+
+  a {
+    @apply text-accent hover:underline;
+  }
+
+  code {
+    @apply bg-muted px-1 rounded-md font-mono text-sm text-accent break-words;
+  }
+
+  pre {
+    @apply my-0;
+  }
+
+  .prose {
+    @apply max-w-none;
+  }
+  @screen sm {
+    .prose {
+      @apply max-w-prose;
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-block px-6 py-2 rounded-full font-bold transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-accent-foreground hover:bg-opacity-80;
+  }
+
+  .btn-outline {
+    @apply border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground;
+  }
+
+  .btn-neon {
+    @apply relative border-2 border-transparent;
+    background-clip: padding-box;
+  }
+
+  .btn-neon::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-full;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    transition: all 0.3s ease;
+  }
+
+  .btn-neon:hover::before {
+    @apply blur-md;
+    transform: scale(1.05);
+  }
+}
