@@ -30,7 +30,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/superclaude.github.io">
+    <Router>
       <>
         <Navbar />
         <div className="flex flex-col min-h-screen">
