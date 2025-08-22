@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { GlowingEffect } from './GlowingEffect';
 
 function Card({ title, description, link, isExternal = false, icon, index }) {
   const content = (
     <div
-      className="group block p-6 bg-background/80 backdrop-blur-lg border border-border rounded-xl hover:bg-white/10 transition-all duration-300 h-full"
+      className="group relative block p-6 bg-background/80 backdrop-blur-lg border border-border rounded-xl hover:bg-white/10 transition-all duration-300 h-full"
     >
+      <GlowingEffect glow={true} spread={40} blur={10} borderWidth={3} />
       <div className="flex items-start mb-4">
         {icon && <div className="text-accent mr-4 mt-1">{icon}</div>}
         <div className="flex-1">
