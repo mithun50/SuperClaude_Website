@@ -65,15 +65,6 @@
   pre {
     @apply my-0;
   }
-
-  .prose {
-    @apply max-w-none;
-  }
-  @screen sm {
-    .prose {
-      @apply max-w-prose;
-    }
-  }
 }
 
 @layer components {

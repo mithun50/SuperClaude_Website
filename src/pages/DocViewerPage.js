@@ -89,8 +89,8 @@ function DocViewerPage() {
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
-        <main className="flex-1 overflow-x-auto">
-          <div className="prose dark:prose-invert max-w-none">
+        <main className="flex-1">
+          <div className="prose dark:prose-invert overflow-x-auto">
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
