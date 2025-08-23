@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { GlowingEffect } from '../components/ui/glowing-effect';
 import { GlowingEffectDemo } from '../components/glowing-effect-demo';
 import { Heart, BookOpen, Users, Github, ArrowRight } from 'lucide-react';
 
@@ -65,7 +66,15 @@ function HomePage() {
       </div>
 
       {/* Quick Start Section */}
-      <div id="quick-start" className="py-12 sm:py-16 md:py-20 bg-background/80 backdrop-blur-lg border border-border rounded-2xl px-4 sm:px-6 lg:px-8">
+      <div id="quick-start" className="relative py-12 sm:py-16 md:py-20 bg-background/80 backdrop-blur-lg border border-border rounded-2xl px-4 sm:px-6 lg:px-8">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+          borderWidth={3}
+        />
         <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-center text-foreground">
           SuperClaude Quick Start Guide
         </h2>
@@ -118,15 +127,39 @@ function HomePage() {
           </p>
         </div>
         <div className="mt-12 grid md:grid-cols-3 gap-8 text-center">
-          <div className="bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+          <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+            <GlowingEffect
+              spread={40}
+              glow={true}
+              disabled={false}
+              proximity={64}
+              inactiveZone={0.01}
+              borderWidth={3}
+            />
             <h3 className="text-xl font-bold text-foreground">21 Slash Commands</h3>
             <p className="mt-2 text-secondary-foreground">For workflow automation like brainstorming, implementation, and analysis.</p>
           </div>
-          <div className="bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+          <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+            <GlowingEffect
+              spread={40}
+              glow={true}
+              disabled={false}
+              proximity={64}
+              inactiveZone={0.01}
+              borderWidth={3}
+            />
             <h3 className="text-xl font-bold text-foreground">13 AI Specialists</h3>
             <p className="mt-2 text-secondary-foreground">Domain experts in architecture, security, frontend, and backend.</p>
           </div>
-          <div className="bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+          <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
+            <GlowingEffect
+              spread={40}
+              glow={true}
+              disabled={false}
+              proximity={64}
+              inactiveZone={0.01}
+              borderWidth={3}
+            />
             <h3 className="text-xl font-bold text-foreground">6 Behavioral Modes</h3>
             <p className="mt-2 text-secondary-foreground">For different contexts like brainstorming, introspection, and orchestration.</p>
           </div>
