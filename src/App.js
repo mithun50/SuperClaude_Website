@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { SidebarProvider } from './context/SidebarContext';
 import HomePage from './pages/HomePage';
 import DocPage from './pages/DocPage';
 import DocViewerPage from './pages/DocViewerPage';
@@ -30,15 +31,17 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <>
-        <Navbar />
-        <div className="flex flex-col min-h-screen">
-          <AppContent />
-          <Footer />
-        </div>
-      </>
-    </Router>
+    <SidebarProvider>
+      <Router>
+        <>
+          <Navbar />
+          <div className="flex flex-col min-h-screen">
+            <AppContent />
+            <Footer />
+          </div>
+        </>
+      </Router>
+    </SidebarProvider>
   );
 }
 

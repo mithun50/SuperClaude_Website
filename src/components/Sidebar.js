@@ -1,8 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { X } from 'lucide-react';
 import docsMap from '../docs-map.json';
+import { useSidebar } from '../context/SidebarContext';
+import { cn } from '../lib/utils';
 
 const Sidebar = () => {
+  const { isOpen, toggleSidebar } = useSidebar();
+
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
       acc[doc.category] = [];
@@ -12,8 +17,19 @@ const Sidebar = () => {
   }, {});
 
   return (
-    <aside className="w-64 flex-shrink-0">
-      <nav className="sticky top-20">
+    <aside
+      className={cn(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}
+    >
+      <div className="flex justify-between items-center p-4 lg:hidden">
+        <h3 className="text-lg font-semibold">Menu</h3>
+        <button onClick={toggleSidebar} className="p-2 rounded-md hover:bg-muted">
+          <X size={20} />
+        </button>
+      </div>
+      <nav className="p-4">
         {Object.entries(groupedDocs).map(([category, docs]) => (
           <div key={category} className="mb-4">
             <h3 className="text-lg font-semibold mb-2">{category.replace(/[-_]/g, ' ')}</h3>
@@ -24,6 +40,11 @@ const Sidebar = () => {
                     to={`/docs/${doc.category}/${doc.name}`}
                     className="block py-1 text-muted-foreground hover:text-foreground"
                     activeClassName="text-foreground font-semibold"
+                    onClick={() => {
+                      if (isOpen) {
+                        toggleSidebar();
+                      }
+                    }}
                   >
                     {doc.title}
                   </NavLink>

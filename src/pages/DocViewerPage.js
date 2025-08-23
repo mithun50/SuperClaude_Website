@@ -6,6 +6,7 @@ import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
 import Sidebar from '../components/Sidebar';
+import MenuButton from '../components/MenuButton';
 
 function DocViewerPage() {
   const { category, file } = useParams();
@@ -61,6 +62,7 @@ function DocViewerPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1 overflow-x-auto">
+          <MenuButton />
           <div className="prose dark:prose-invert max-w-none">
             <ReactMarkdown
               children={markdown}

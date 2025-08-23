@@ -1,6 +1,7 @@
 import React from 'react';
 import DocCard from '../components/DocCard';
 import Sidebar from '../components/Sidebar';
+import MenuButton from '../components/MenuButton';
 import docsMap from '../docs-map.json';
 
 function DocPage() {
@@ -17,6 +18,7 @@ function DocPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1">
+          <MenuButton />
           <div className="text-center">
             <h2 className="text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">
               Documentation
