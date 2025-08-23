@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import 'github-markdown-css/github-markdown.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import docsMap from '../docs-map.json';
@@ -96,17 +97,16 @@ function DocViewerPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1 bg-background min-w-0">
-          <div className="prose dark:prose-invert max-w-none w-full overflow-x-hidden p-2 sm:p-6" style={{ backgroundColor: 'transparent' }}>
+          <div
+            className="markdown-body p-2 sm:p-6"
+            data-theme={theme}
+            style={{ backgroundColor: 'transparent' }}
+          >
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
               components={{
-                table: ({ node, ...props }) => (
-                  <div className="overflow-x-auto">
-                    <table {...props} className="min-w-full" />
-                  </div>
-                ),
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || '');
                   if (!inline && match) {
