@@ -1,1014 +1,338 @@
-# Diagnostic Reference Guide
+# SuperClaude Diagnostic Reference Guide
 
-**Advanced Diagnostics Focus**: This guide provides comprehensive diagnostic procedures for performance monitoring, session management, and system-level troubleshooting. Use these procedures for complex issues that require deep analysis and systematic investigation.
+## Overview
 
-**Systematic Investigation**: Each diagnostic section includes monitoring tools, analysis procedures, and optimization strategies to identify root causes and implement effective solutions.
+This guide provides procedures for diagnosing issues with SuperClaude context files and configurations. Since SuperClaude is a collection of text files (not running software), diagnostics focus on file verification and configuration checking.
 
-## Performance Monitoring and Analysis
+**Important**: There are no processes to monitor, no performance metrics to measure, and no system resources to analyze. SuperClaude is purely configuration files that Claude Code reads.
 
-### System Resource Diagnostics
+## Quick Diagnostics
 
-**Comprehensive Performance Monitoring:**
+### One-Line Health Check
+
 ```bash
-# Complete system resource analysis
-echo "=== SuperClaude Performance Diagnostics ==="
-
-# CPU usage analysis
-echo "=== CPU Usage ==="
-top -b -n 1 | head -10
-ps aux --sort=-%cpu | head -10
-
-# Memory usage analysis
-echo "=== Memory Usage ==="
-free -h
-ps aux --sort=-%mem | head -10
-
-# Disk I/O analysis
-echo "=== Disk I/O ==="
-iostat -x 1 3
-df -h
-
-# Network analysis (if MCP servers used)
-echo "=== Network Status ==="
-netstat -i
-ss -tuln | grep -E ":8000|:8001|:8002"
-
-# Process analysis
-echo "=== SuperClaude Processes ==="
-ps aux | grep -E "python.*SuperClaude|node.*mcp|claude"
+# Quick status check
+ls ~/.claude/CLAUDE.md && echo "✅ SuperClaude installed" || echo "❌ Not installed"
 ```
 
-**Real-time Performance Monitoring:**
+### Basic Diagnostic Commands
+
 ```bash
-# Continuous monitoring setup
-echo "=== Setting up continuous monitoring ==="
+# Check if SuperClaude is installed
+python3 -m SuperClaude --version
 
-# Install monitoring tools if needed
-# Ubuntu/Debian: sudo apt install htop iotop nethogs
-# CentOS/RHEL: sudo yum install htop iotop nethogs
-# macOS: brew install htop
+# Count context files
+find ~/.claude -name "*.md" -type f | wc -l
+# Expected: 40+ files
 
-# Real-time monitoring commands
-echo "Use these commands for real-time monitoring:"
-echo "htop              # Interactive process monitor"
-echo "iotop             # I/O usage by process"
-echo "nethogs           # Network usage by process"
-echo "watch free -h     # Memory usage updates"
-echo "watch df -h       # Disk space updates"
+# Check file sizes (context files should have content)
+find ~/.claude -name "*.md" -type f -size 0
+# Expected: No output (no empty files)
 
-# Performance baseline establishment
-echo "=== Establishing performance baselines ==="
-time python3 -m SuperClaude --version
-time ls ~/.claude/
-time cat ~/.claude/CLAUDE.md | wc -l
+# Verify directory structure
+tree -L 2 ~/.claude/
+# Or without tree command:
+ls -la ~/.claude/
 ```
 
-**Performance Bottleneck Identification:**
+## File System Diagnostics
+
+### Context File Verification
+
 ```bash
-# Systematic bottleneck analysis
-echo "=== Bottleneck Analysis ==="
+#!/bin/bash
+# Comprehensive context file check
 
-# CPU bottleneck detection
-echo "CPU Analysis:"
-top -b -n 1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1
-if [ $(top -b -n 1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1 | cut -d'.' -f1) -gt 80 ]; then
-    echo "⚠️ High CPU usage detected"
-    echo "Solutions: Reduce operation scope, use --scope flags"
-fi
+echo "=== SuperClaude Context File Diagnostic ==="
 
-# Memory bottleneck detection
-echo "Memory Analysis:"
-MEM_USAGE=$(free | grep Mem | awk '{printf "%.0f", $3/$2 * 100}')
-if [ $MEM_USAGE -gt 85 ]; then
-    echo "⚠️ High memory usage: ${MEM_USAGE}%"
-    echo "Solutions: Clear sessions, restart Claude Code"
-fi
+# Define expected counts
+EXPECTED_AGENTS=14
+EXPECTED_COMMANDS=21
+EXPECTED_MODES=6
 
-# Disk I/O bottleneck detection
-echo "Disk I/O Analysis:"
-iostat -x 1 1 | tail -n +4 | awk '$10 > 80 {print "⚠️ High I/O on " $1 ": " $10 "% utilization"}'
+# Count actual files
+ACTUAL_AGENTS=$(ls ~/.claude/agents/*.md 2>/dev/null | wc -l)
+ACTUAL_COMMANDS=$(ls ~/.claude/commands/*.md 2>/dev/null | wc -l)
+ACTUAL_MODES=$(ls ~/.claude/modes/*.md 2>/dev/null | wc -l)
 
-# Network bottleneck detection (for MCP servers)
-echo "Network Analysis:"
-ping -c 3 8.8.8.8 | tail -1 | awk -F'/' '{if($5 > 100) print "⚠️ High network latency: " $5 "ms"}'
-```
+# Report findings
+echo "Agents: $ACTUAL_AGENTS/$EXPECTED_AGENTS $([ $ACTUAL_AGENTS -ge $EXPECTED_AGENTS ] && echo ✅ || echo ⚠️)"
+echo "Commands: $ACTUAL_COMMANDS/$EXPECTED_COMMANDS $([ $ACTUAL_COMMANDS -ge $EXPECTED_COMMANDS ] && echo ✅ || echo ⚠️)"
+echo "Modes: $ACTUAL_MODES/$EXPECTED_MODES $([ $ACTUAL_MODES -ge $EXPECTED_MODES ] && echo ✅ || echo ⚠️)"
 
-### Performance Optimization Strategies
-
-**CPU Optimization:**
-```bash
-# CPU usage optimization
-echo "=== CPU Optimization Strategies ==="
-
-# Identify CPU-intensive processes
-ps aux --sort=-%cpu | grep -E "python.*SuperClaude|node.*mcp" | head -5
-
-# Optimization solutions
-echo "CPU Optimization Actions:"
-echo "1. Use scope limiting: --scope file instead of --scope project"
-echo "2. Break complex tasks into smaller operations"
-echo "3. Use selective MCP servers: --c7 --seq instead of --all-mcp"
-echo "4. Restart Claude Code session to clear accumulated processes"
-
-# CPU monitoring during operations
-echo "Monitor CPU during operations:"
-echo "watch 'ps aux --sort=-%cpu | head -10'"
-```
-
-**Memory Optimization:**
-```bash
-# Memory usage optimization
-echo "=== Memory Optimization Strategies ==="
-
-# Memory analysis
-echo "Current memory status:"
-free -h
-echo ""
-echo "Process memory usage:"
-ps aux --sort=-%mem | head -10
-
-# Session memory cleanup
-echo "Session cleanup commands:"
-echo "rm -rf ~/.claude/sessions/old-*     # Remove old sessions"
-echo "rm -rf ~/.claude/temp/              # Clear temporary files"
-echo "rm -rf /tmp/superclaude-*           # Clear system temp files"
-
-# Memory monitoring
-echo "Memory monitoring:"
-echo "watch 'free -h && echo && ps aux --sort=-%mem | head -5'"
-```
-
-**Disk I/O Optimization:**
-```bash
-# Disk I/O optimization
-echo "=== Disk I/O Optimization ==="
-
-# Disk usage analysis
-du -sh ~/.claude/
-du -sh ~/.claude/sessions/ 2>/dev/null || echo "No sessions directory"
-df -h ~/.claude/
-
-# I/O optimization actions
-echo "I/O Optimization Actions:"
-echo "1. Focus on specific files instead of entire projects"
-echo "2. Use faster storage (SSD) for ~/.claude directory"
-echo "3. Regular cleanup of session files"
-echo "4. Move large projects to faster storage"
-
-# I/O monitoring
-echo "Monitor I/O usage:"
-echo "iotop -o -d 1  # Show processes doing I/O"
-```
-
-## Session Management Diagnostics
-
-### Session Lifecycle Analysis
-
-**Session State Diagnosis:**
-```bash
-# Complete session state analysis
-echo "=== Session State Diagnostics ==="
-
-# Session directory analysis
-echo "Session Directory Analysis:"
-ls -la ~/.claude/sessions/ 2>/dev/null || echo "No sessions directory found"
-du -sh ~/.claude/sessions/ 2>/dev/null || echo "No sessions to analyze"
-
-# Session file integrity check
-echo "Session File Integrity:"
-find ~/.claude/sessions/ -name "*.json" -type f 2>/dev/null | while read file; do
-    if python3 -c "import json; json.load(open('$file'))" 2>/dev/null; then
-        echo "✅ Valid: $(basename $file)"
+# Check core files
+for file in CLAUDE.md FLAGS.md RULES.md PRINCIPLES.md; do
+    if [ -f ~/.claude/$file ]; then
+        SIZE=$(wc -c < ~/.claude/$file)
+        echo "$file: $SIZE bytes ✅"
     else
-        echo "❌ Corrupted: $(basename $file)"
+        echo "$file: MISSING ❌"
     fi
 done
-
-# Session memory usage analysis
-echo "Session Memory Usage:"
-find ~/.claude/sessions/ -name "*.json" -type f -exec du -h {} \; 2>/dev/null | sort -hr | head -10
 ```
 
-**Session Performance Analysis:**
+### Import System Check
+
 ```bash
-# Session performance diagnostics
-echo "=== Session Performance Analysis ==="
-
-# Session load time testing
-echo "Session Load Performance:"
-time ls ~/.claude/sessions/ >/dev/null 2>&1
-
-# Session access pattern analysis
-echo "Session Access Patterns:"
-find ~/.claude/sessions/ -type f -printf "%T@ %p\n" 2>/dev/null | sort -n | tail -10 | while read timestamp file; do
-    date -d @${timestamp} "+%Y-%m-%d %H:%M:%S"
-    basename "$file"
-    echo "---"
-done
-
-# Session storage efficiency
-echo "Session Storage Efficiency:"
-total_sessions=$(find ~/.claude/sessions/ -name "*.json" 2>/dev/null | wc -l)
-total_size=$(du -sb ~/.claude/sessions/ 2>/dev/null | cut -f1)
-if [ "$total_sessions" -gt 0 ] && [ "$total_size" -gt 0 ]; then
-    avg_size=$((total_size / total_sessions))
-    echo "Total sessions: $total_sessions"
-    echo "Total size: $(echo $total_size | awk '{print $1/1024/1024 "MB"}')"
-    echo "Average session size: $(echo $avg_size | awk '{print $1/1024 "KB"}')"
-fi
-```
-
-### Session Recovery Procedures
-
-**Session Corruption Recovery:**
-```bash
-# Session corruption diagnosis and recovery
-echo "=== Session Corruption Recovery ==="
-
-# Identify corrupted sessions
-echo "Identifying corrupted sessions:"
-find ~/.claude/sessions/ -name "*.json" -type f 2>/dev/null | while read file; do
-    if ! python3 -c "import json; json.load(open('$file'))" 2>/dev/null; then
-        echo "Corrupted: $file"
-        mv "$file" "$file.corrupted.$(date +%s)"
-        echo "Backed up to: $file.corrupted.$(date +%s)"
-    fi
-done
-
-# Session backup creation
-echo "Creating session backups:"
-if [ -d ~/.claude/sessions/ ]; then
-    backup_dir=~/.claude/sessions.backup.$(date +%Y%m%d_%H%M%S)
-    cp -r ~/.claude/sessions/ "$backup_dir"
-    echo "Sessions backed up to: $backup_dir"
-fi
-
-# Session validation procedure
-echo "Session validation procedure:"
-cat << 'EOF' > /tmp/validate_session.py
-import json
-import sys
-import os
-
-def validate_session(filepath):
-    try:
-        with open(filepath, 'r') as f:
-            data = json.load(f)
-        
-        # Basic structure validation
-        required_keys = ['timestamp', 'context']
-        for key in required_keys:
-            if key not in data:
-                return False, f"Missing key: {key}"
-        
-        return True, "Valid session"
-    except json.JSONDecodeError as e:
-        return False, f"JSON error: {e}"
-    except Exception as e:
-        return False, f"Error: {e}"
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python validate_session.py <session_file>")
-        sys.exit(1)
-    
-    filepath = sys.argv[1]
-    is_valid, message = validate_session(filepath)
-    print(f"{'✅' if is_valid else '❌'} {filepath}: {message}")
-EOF
-
-find ~/.claude/sessions/ -name "*.json" -type f 2>/dev/null | while read file; do
-    python3 /tmp/validate_session.py "$file"
-done
-
-rm /tmp/validate_session.py
-```
-
-**Session Optimization Procedures:**
-```bash
-# Session optimization and cleanup
-echo "=== Session Optimization ==="
-
-# Archive old sessions
-echo "Archiving old sessions (>30 days):"
-find ~/.claude/sessions/ -name "*.json" -type f -mtime +30 2>/dev/null | while read file; do
-    archive_dir=~/.claude/sessions.archive/$(date +%Y-%m)
-    mkdir -p "$archive_dir"
-    mv "$file" "$archive_dir/"
-    echo "Archived: $(basename $file)"
-done
-
-# Compress large sessions
-echo "Compressing large sessions (>1MB):"
-find ~/.claude/sessions/ -name "*.json" -type f -size +1M 2>/dev/null | while read file; do
-    gzip "$file"
-    echo "Compressed: $(basename $file).gz"
-done
-
-# Session defragmentation
-echo "Session defragmentation:"
-if [ -d ~/.claude/sessions/ ]; then
-    # Sort sessions by access time and reorganize
-    temp_dir=$(mktemp -d)
-    find ~/.claude/sessions/ -name "*.json" -type f -printf "%A@ %p\n" 2>/dev/null | sort -n | while read atime file; do
-        cp "$file" "$temp_dir/$(basename $file)"
-    done
-    echo "Sessions reorganized in: $temp_dir"
-    echo "Replace sessions directory with: mv $temp_dir ~/.claude/sessions.optimized"
-fi
-```
-
-## Advanced System Diagnostics
-
-### Comprehensive Health Assessment
-
-**System-Wide Health Check:**
-```bash
-# Complete SuperClaude system health assessment
-echo "=== SuperClaude System Health Assessment ==="
-
-# Core component verification
-echo "Core Component Status:"
-python3 -m SuperClaude --version && echo "✅ SuperClaude installed" || echo "❌ SuperClaude not found"
-ls ~/.claude/CLAUDE.md >/dev/null 2>&1 && echo "✅ Configuration exists" || echo "❌ Configuration missing"
-grep -q "SuperClaude" ~/.claude/CLAUDE.md 2>/dev/null && echo "✅ Configuration valid" || echo "❌ Configuration invalid"
-
-# Dependency verification
-echo "Dependency Status:"
-python3 --version | grep -E "3\.[8-9]|3\.[1-9][0-9]" >/dev/null && echo "✅ Python version OK" || echo "❌ Python version incompatible"
-which claude >/dev/null 2>&1 && echo "✅ Claude Code available" || echo "❌ Claude Code not found"
-
-# MCP server verification
-echo "MCP Server Status:"
-node --version 2>/dev/null | grep -E "v1[6-9]|v[2-9][0-9]" >/dev/null && echo "✅ Node.js version OK" || echo "⚠️ Node.js version may be incompatible"
-npm list -g 2>/dev/null | grep -E "context7|sequential|magic" >/dev/null && echo "✅ MCP servers installed" || echo "⚠️ No MCP servers found"
-
-# File system verification
-echo "File System Status:"
-[ -w ~/.claude/ ] && echo "✅ Configuration directory writable" || echo "❌ Configuration directory not writable"
-df -h ~/.claude/ | tail -1 | awk '{if($5+0 < 90) print "✅ Sufficient disk space: " $5 " used"; else print "⚠️ Low disk space: " $5 " used"}'
-
-# Network verification (if MCP servers require internet)
-echo "Network Status:"
-ping -c 1 8.8.8.8 >/dev/null 2>&1 && echo "✅ Internet connectivity OK" || echo "⚠️ Internet connectivity issues"
-```
-
-**Configuration Integrity Analysis:**
-```bash
-# Configuration file integrity analysis
-echo "=== Configuration Integrity Analysis ==="
-
-# CLAUDE.md structure analysis
-echo "CLAUDE.md Analysis:"
+# Verify import statements in CLAUDE.md
+echo "=== Import System Check ==="
 if [ -f ~/.claude/CLAUDE.md ]; then
-    line_count=$(wc -l ~/.claude/CLAUDE.md | cut -d' ' -f1)
-    if [ $line_count -gt 100 ]; then
-        echo "✅ Configuration size appropriate: $line_count lines"
-    else
-        echo "⚠️ Configuration may be incomplete: $line_count lines"
-    fi
+    echo "Imports found in CLAUDE.md:"
+    grep "^@import" ~/.claude/CLAUDE.md
     
-    # Check for required imports
-    import_count=$(grep -c "^@" ~/.claude/CLAUDE.md 2>/dev/null)
-    if [ $import_count -gt 5 ]; then
-        echo "✅ Import structure OK: $import_count imports"
-    else
-        echo "⚠️ Few imports found: $import_count imports"
-    fi
+    # Count import statements
+    IMPORT_COUNT=$(grep -c "^@import" ~/.claude/CLAUDE.md)
+    echo "Total imports: $IMPORT_COUNT"
     
-    # Check for circular imports
-    echo "Circular import check:"
-    if grep -q "@CLAUDE.md" ~/.claude/CLAUDE.md 2>/dev/null; then
-        echo "❌ Circular import detected"
+    if [ $IMPORT_COUNT -ge 5 ]; then
+        echo "✅ Import system configured correctly"
     else
-        echo "✅ No circular imports"
+        echo "⚠️ Some imports may be missing"
     fi
 else
     echo "❌ CLAUDE.md not found"
 fi
+```
 
-# Component file analysis
-echo "Component Files Analysis:"
-for component in FLAGS RULES PRINCIPLES; do
-    if [ -f ~/.claude/${component}.md ]; then
-        size=$(wc -l ~/.claude/${component}.md | cut -d' ' -f1)
-        echo "✅ ${component}.md: $size lines"
+## Configuration Diagnostics
+
+### MCP Server Configuration Check
+
+```bash
+# Check MCP configuration
+echo "=== MCP Configuration Diagnostic ==="
+
+CONFIG_FILE=~/.claude.json
+
+if [ -f "$CONFIG_FILE" ]; then
+    echo "✅ Configuration file exists"
+    
+    # Validate JSON syntax
+    if python3 -c "import json; json.load(open('$CONFIG_FILE'))" 2>/dev/null; then
+        echo "✅ Valid JSON syntax"
+        
+        # List configured servers
+        echo "Configured MCP servers:"
+        python3 -c "
+import json
+with open('$HOME/.claude.json') as f:
+    config = json.load(f)
+    if 'mcpServers' in config:
+        for server in config['mcpServers']:
+            print(f'  - {server}')
+    else:
+        print('  No servers configured')
+        "
     else
-        echo "❌ ${component}.md missing"
+        echo "❌ Invalid JSON syntax in $CONFIG_FILE"
+    fi
+else
+    echo "⚠️ No MCP configuration file found"
+    echo "  This is OK if you don't use MCP servers"
+fi
+```
+
+### Permission Diagnostics
+
+```bash
+# Check file permissions
+echo "=== File Permission Check ==="
+
+# Check if files are readable
+UNREADABLE_COUNT=0
+for file in ~/.claude/**/*.md; do
+    if [ ! -r "$file" ]; then
+        echo "❌ Cannot read: $file"
+        ((UNREADABLE_COUNT++))
+    fi
+done
+
+if [ $UNREADABLE_COUNT -eq 0 ]; then
+    echo "✅ All context files are readable"
+else
+    echo "⚠️ Found $UNREADABLE_COUNT unreadable files"
+    echo "Fix with: chmod 644 ~/.claude/**/*.md"
+fi
+
+# Check directory permissions
+for dir in ~/.claude ~/.claude/agents ~/.claude/commands ~/.claude/modes; do
+    if [ -d "$dir" ]; then
+        if [ -x "$dir" ]; then
+            echo "✅ $dir is accessible"
+        else
+            echo "❌ $dir is not accessible"
+        fi
+    else
+        echo "❌ $dir does not exist"
     fi
 done
 ```
 
-### Error Pattern Analysis
+## Common Issue Diagnostics
 
-**Error Classification and Analysis:**
+### Issue: Commands Not Recognized
+
 ```bash
-# Error pattern analysis and classification
-echo "=== Error Pattern Analysis ==="
+# Diagnose command issues
+COMMAND="implement"  # Change to test different commands
 
-# Create error classification function
-classify_error() {
-    local error_msg="$1"
+echo "=== Diagnosing command: $COMMAND ==="
+
+FILE=~/.claude/commands/$COMMAND.md
+
+if [ -f "$FILE" ]; then
+    echo "✅ Command file exists"
     
-    case "$error_msg" in
-        *"permission denied"*|*"Permission denied"*)
-            echo "PERMISSION_ERROR: File system access issue"
-            ;;
-        *"command not found"*|*"not recognized"*)
-            echo "COMMAND_ERROR: Installation or configuration issue"
-            ;;
-        *"timeout"*|*"connection failed"*)
-            echo "NETWORK_ERROR: Connectivity or server issue"
-            ;;
-        *"memory"*|*"out of memory"*)
-            echo "RESOURCE_ERROR: Insufficient system resources"
-            ;;
-        *"syntax error"*|*"invalid"*)
-            echo "CONFIGURATION_ERROR: Configuration file corruption"
-            ;;
-        *"dependency"*|*"module not found"*)
-            echo "DEPENDENCY_ERROR: Missing required components"
-            ;;
-        *)
-            echo "UNKNOWN_ERROR: Requires manual investigation"
-            ;;
-    esac
-}
-
-# Error log analysis (if logs exist)
-echo "Error Log Analysis:"
-if [ -f ~/.claude/error.log ]; then
-    echo "Recent errors:"
-    tail -20 ~/.claude/error.log | while read line; do
-        error_type=$(classify_error "$line")
-        echo "$error_type: $line"
-    done
-else
-    echo "No error log found"
-fi
-
-# System log analysis for SuperClaude-related errors
-echo "System Log Analysis:"
-journalctl --since "1 day ago" 2>/dev/null | grep -i -E "superclaude|claude|python.*error" | tail -10 || echo "No system logs available"
-```
-
-**Root Cause Analysis Procedures:**
-```bash
-# Systematic root cause analysis
-echo "=== Root Cause Analysis ==="
-
-# Problem reproduction framework
-echo "Problem Reproduction Framework:"
-cat << 'EOF'
-Root Cause Analysis Steps:
-
-1. OBSERVATION: What exactly is failing?
-   - Record exact error messages
-   - Note system state when error occurs
-   - Document reproduction steps
-
-2. HYPOTHESIS: What might be causing the issue?
-   - Installation problems
-   - Configuration errors
-   - Resource constraints
-   - Environmental issues
-
-3. TESTING: How to verify the hypothesis?
-   - Isolated component testing
-   - Resource monitoring during failure
-   - Configuration validation
-   - Dependency verification
-
-4. RESOLUTION: How to fix the identified cause?
-   - Apply targeted solutions
-   - Verify fix effectiveness
-   - Prevent recurrence
-   - Document solution
-EOF
-
-# Automated diagnostic procedures
-echo "Automated Diagnostic Procedures:"
-
-# Test isolation procedure
-test_isolation() {
-    echo "Testing component isolation:"
-    
-    # Test basic Python functionality
-    python3 -c "print('Python OK')" && echo "✅ Python working" || echo "❌ Python issue"
-    
-    # Test SuperClaude installation
-    python3 -m SuperClaude --version >/dev/null 2>&1 && echo "✅ SuperClaude installed" || echo "❌ SuperClaude issue"
-    
-    # Test configuration loading
-    [ -f ~/.claude/CLAUDE.md ] && echo "✅ Configuration exists" || echo "❌ Configuration missing"
-    
-    # Test MCP servers (if applicable)
-    if which node >/dev/null 2>&1; then
-        npm list -g >/dev/null 2>&1 && echo "✅ npm working" || echo "❌ npm issue"
-    fi
-}
-
-test_isolation
-```
-
-## Performance Benchmarking
-
-### Baseline Performance Metrics
-
-**Performance Baseline Establishment:**
-```bash
-# Establish SuperClaude performance baselines
-echo "=== Performance Baseline Establishment ==="
-
-# System capability assessment
-echo "System Capability Assessment:"
-echo "CPU cores: $(nproc)"
-echo "Memory: $(free -h | grep Mem | awk '{print $2}')"
-echo "Storage type: $(lsblk -o NAME,ROTA | grep "0$" >/dev/null && echo "SSD" || echo "HDD")"
-echo "Python version: $(python3 --version)"
-
-# Operation timing benchmarks
-echo "Operation Timing Benchmarks:"
-
-# Basic operations
-echo "Basic operation timings:"
-time_basic() {
-    local start_time=$(date +%s.%N)
-    eval "$1" >/dev/null 2>&1
-    local end_time=$(date +%s.%N)
-    echo "$(echo "$end_time - $start_time" | bc)s"
-}
-
-echo "SuperClaude version check: $(time_basic 'python3 -m SuperClaude --version')"
-echo "Configuration read: $(time_basic 'cat ~/.claude/CLAUDE.md | wc -l')"
-echo "Session directory list: $(time_basic 'ls ~/.claude/sessions/')"
-
-# File operation benchmarks
-echo "File Operation Benchmarks:"
-temp_file="/tmp/superclaude_test_$(date +%s).txt"
-dd if=/dev/zero of="$temp_file" bs=1M count=10 >/dev/null 2>&1
-read_time=$(time_basic "cat $temp_file")
-echo "10MB file read: ${read_time}"
-rm "$temp_file"
-
-# Memory usage baseline
-echo "Memory Usage Baseline:"
-python3 -c "
-import psutil
-import os
-process = psutil.Process(os.getpid())
-print(f'Current memory usage: {process.memory_info().rss / 1024 / 1024:.1f} MB')
-"
-```
-
-**Performance Regression Testing:**
-```bash
-# Performance regression detection
-echo "=== Performance Regression Testing ==="
-
-# Create performance test suite
-create_performance_test() {
-    cat << 'EOF' > /tmp/superclaude_perf_test.py
-#!/usr/bin/env python3
-import time
-import subprocess
-import json
-import sys
-import os
-
-def time_operation(command, description):
-    """Time a shell command and return duration"""
-    start_time = time.time()
-    try:
-        result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=30)
-        end_time = time.time()
-        duration = end_time - start_time
-        success = result.returncode == 0
-        return {
-            'description': description,
-            'duration': duration,
-            'success': success,
-            'command': command
-        }
-    except subprocess.TimeoutExpired:
-        return {
-            'description': description,
-            'duration': 30.0,
-            'success': False,
-            'command': command,
-            'error': 'timeout'
-        }
-
-def run_performance_tests():
-    """Run suite of performance tests"""
-    tests = [
-        ('python3 -m SuperClaude --version', 'Version check'),
-        ('ls ~/.claude/', 'Config directory list'),
-        ('cat ~/.claude/CLAUDE.md | wc -l', 'Config file read'),
-        ('find ~/.claude/ -name "*.md" | wc -l', 'Config file search'),
-    ]
-    
-    results = []
-    for command, description in tests:
-        print(f"Testing: {description}...")
-        result = time_operation(command, description)
-        results.append(result)
-        status = "✅" if result['success'] else "❌"
-        print(f"  {status} {description}: {result['duration']:.3f}s")
-    
-    return results
-
-if __name__ == "__main__":
-    print("SuperClaude Performance Test Suite")
-    print("=" * 40)
-    results = run_performance_tests()
-    
-    # Save results for comparison
-    timestamp = time.strftime("%Y%m%d_%H%M%S")
-    results_file = f"/tmp/superclaude_perf_{timestamp}.json"
-    with open(results_file, 'w') as f:
-        json.dump({
-            'timestamp': timestamp,
-            'results': results
-        }, f, indent=2)
-    
-    print(f"\nResults saved to: {results_file}")
-    
-    # Summary statistics
-    successful_tests = [r for r in results if r['success']]
-    if successful_tests:
-        avg_duration = sum(r['duration'] for r in successful_tests) / len(successful_tests)
-        print(f"Average operation time: {avg_duration:.3f}s")
-    
-    failed_tests = [r for r in results if not r['success']]
-    if failed_tests:
-        print(f"Failed tests: {len(failed_tests)}")
-        for test in failed_tests:
-            print(f"  - {test['description']}")
-EOF
-
-    python3 /tmp/superclaude_perf_test.py
-    rm /tmp/superclaude_perf_test.py
-}
-
-create_performance_test
-```
-
-### Resource Usage Optimization
-
-**Memory Usage Optimization:**
-```bash
-# Memory usage optimization and monitoring
-echo "=== Memory Usage Optimization ==="
-
-# Memory usage analysis
-analyze_memory_usage() {
-    echo "Current memory state:"
-    free -h
-    echo ""
-    
-    echo "SuperClaude-related processes:"
-    ps aux | grep -E "python.*SuperClaude|node.*mcp" | head -10
-    echo ""
-    
-    echo "Memory-intensive processes:"
-    ps aux --sort=-%mem | head -10
-    echo ""
-    
-    # Memory usage recommendations
-    total_mem=$(free -m | grep Mem | awk '{print $2}')
-    used_mem=$(free -m | grep Mem | awk '{print $3}')
-    mem_percent=$((used_mem * 100 / total_mem))
-    
-    echo "Memory usage: ${mem_percent}%"
-    if [ $mem_percent -gt 80 ]; then
-        echo "⚠️ High memory usage detected"
-        echo "Recommendations:"
-        echo "  - Clear old session files: rm -rf ~/.claude/sessions/old-*"
-        echo "  - Restart Claude Code session"
-        echo "  - Use scope limiting: --scope file"
-        echo "  - Close unused applications"
-    elif [ $mem_percent -gt 60 ]; then
-        echo "ℹ️ Moderate memory usage"
-        echo "Consider periodic session cleanup"
+    # Check file size
+    SIZE=$(wc -c < "$FILE")
+    if [ $SIZE -gt 100 ]; then
+        echo "✅ File has content ($SIZE bytes)"
     else
-        echo "✅ Memory usage is acceptable"
+        echo "⚠️ File seems too small ($SIZE bytes)"
     fi
-}
-
-analyze_memory_usage
-
-# Memory cleanup procedures
-echo "Memory Cleanup Procedures:"
-echo "1. Session cleanup: find ~/.claude/sessions/ -mtime +7 -delete"
-echo "2. Temporary file cleanup: rm -rf /tmp/superclaude-*"
-echo "3. System cache cleanup: sync && echo 3 > /proc/sys/vm/drop_caches (requires sudo)"
-echo "4. Browser cache cleanup (if using Playwright MCP)"
-```
-
-**CPU Usage Optimization:**
-```bash
-# CPU usage optimization
-echo "=== CPU Usage Optimization ==="
-
-# CPU analysis
-analyze_cpu_usage() {
-    echo "CPU usage analysis:"
     
-    # Current CPU load
-    cpu_load=$(uptime | awk -F'load average:' '{print $2}' | awk '{print $1}' | cut -d',' -f1)
-    cpu_cores=$(nproc)
-    cpu_percent=$(echo "$cpu_load * 100 / $cpu_cores" | bc -l | cut -d'.' -f1)
-    
-    echo "CPU load average: $cpu_load (${cpu_percent}% of capacity)"
-    
-    # Process CPU usage
-    echo "Top CPU consumers:"
-    ps aux --sort=-%cpu | head -10
-    
-    # SuperClaude-specific CPU usage
-    echo "SuperClaude-related CPU usage:"
-    ps aux | grep -E "python.*SuperClaude|node.*mcp" | awk '{sum+=$3} END {print "Total CPU: " sum "%"}'
-    
-    # CPU optimization recommendations
-    if [ $cpu_percent -gt 80 ]; then
-        echo "⚠️ High CPU usage detected"
-        echo "Recommendations:"
-        echo "  - Use operation scope limiting"
-        echo "  - Break complex tasks into smaller operations"
-        echo "  - Avoid parallel MCP server operations"
-        echo "  - Consider system upgrade"
+    # Check for metadata
+    if head -10 "$FILE" | grep -q "^---"; then
+        echo "✅ Has metadata header"
     else
-        echo "✅ CPU usage is acceptable"
+        echo "⚠️ Missing metadata header"
     fi
-}
-
-analyze_cpu_usage
-```
-
-## Advanced Troubleshooting Techniques
-
-### Systematic Problem Resolution
-
-**Multi-Layer Diagnostic Approach:**
-```bash
-# Multi-layer diagnostic framework
-echo "=== Multi-Layer Diagnostic Framework ==="
-
-# Layer 1: System level
-echo "Layer 1 - System Level Diagnostics:"
-echo "Operating system: $(uname -a)"
-echo "Available memory: $(free -h | grep Mem | awk '{print $7}')"
-echo "Available disk: $(df -h ~ | tail -1 | awk '{print $4}')"
-echo "System load: $(uptime | awk -F'load average:' '{print $2}')"
-
-# Layer 2: Python environment
-echo "Layer 2 - Python Environment:"
-echo "Python version: $(python3 --version)"
-echo "Python executable: $(which python3)"
-echo "Python modules: $(python3 -c 'import sys; print(len(sys.modules))') loaded"
-echo "SuperClaude installation: $(python3 -m SuperClaude --version 2>/dev/null || echo 'Not installed')"
-
-# Layer 3: SuperClaude configuration
-echo "Layer 3 - SuperClaude Configuration:"
-echo "Configuration directory: $(ls -ld ~/.claude/ 2>/dev/null || echo 'Not found')"
-echo "Configuration files: $(find ~/.claude/ -name "*.md" 2>/dev/null | wc -l) files"
-echo "Session files: $(find ~/.claude/sessions/ -name "*.json" 2>/dev/null | wc -l) sessions"
-
-# Layer 4: MCP servers
-echo "Layer 4 - MCP Servers:"
-if which node >/dev/null 2>&1; then
-    echo "Node.js version: $(node --version)"
-    echo "MCP servers: $(npm list -g 2>/dev/null | grep -E "context7|sequential|magic" | wc -l) installed"
+    
+    # Check for command pattern
+    if grep -q "/sc:$COMMAND" "$FILE"; then
+        echo "✅ Contains command pattern"
+    else
+        echo "⚠️ Missing command pattern"
+    fi
 else
-    echo "Node.js: Not installed"
-fi
-
-# Layer 5: Claude Code integration
-echo "Layer 5 - Claude Code Integration:"
-if which claude >/dev/null 2>&1; then
-    echo "Claude Code: $(claude --version 2>/dev/null || echo 'Version unknown')"
-else
-    echo "Claude Code: Not found in PATH"
+    echo "❌ Command file not found: $FILE"
+    echo "Available commands:"
+    ls ~/.claude/commands/ | sed 's/.md$//'
 fi
 ```
 
-**Dependency Chain Analysis:**
+### Issue: Agent Not Activating
+
 ```bash
-# Dependency chain verification
-echo "=== Dependency Chain Analysis ==="
+# Diagnose agent issues
+AGENT="python-expert"  # Change to test different agents
 
-# Create dependency verification function
-verify_dependency_chain() {
-    local status=0
-    
-    echo "Verifying dependency chain:"
-    
-    # Level 1: Operating system
-    echo -n "1. Operating system compatibility: "
-    case "$(uname -s)" in
-        Linux*) echo "✅ Linux" ;;
-        Darwin*) echo "✅ macOS" ;;
-        CYGWIN*|MINGW*) echo "✅ Windows" ;;
-        *) echo "⚠️ Unknown OS"; status=1 ;;
-    esac
-    
-    # Level 2: Python
-    echo -n "2. Python 3.8+ requirement: "
-    if python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 8) else 1)" 2>/dev/null; then
-        echo "✅ $(python3 --version)"
-    else
-        echo "❌ Python 3.8+ required"
-        status=1
-    fi
-    
-    # Level 3: SuperClaude package
-    echo -n "3. SuperClaude package: "
-    if python3 -m SuperClaude --version >/dev/null 2>&1; then
-        echo "✅ Installed"
-    else
-        echo "❌ Not installed or corrupted"
-        status=1
-    fi
-    
-    # Level 4: Configuration files
-    echo -n "4. Configuration files: "
-    if [ -f ~/.claude/CLAUDE.md ] && [ -s ~/.claude/CLAUDE.md ]; then
-        echo "✅ Present and non-empty"
-    else
-        echo "❌ Missing or empty"
-        status=1
-    fi
-    
-    # Level 5: Node.js (optional but recommended)
-    echo -n "5. Node.js for MCP servers: "
-    if which node >/dev/null 2>&1; then
-        node_version=$(node --version | cut -d'v' -f2 | cut -d'.' -f1)
-        if [ "$node_version" -ge 16 ]; then
-            echo "✅ Node.js $(node --version)"
-        else
-            echo "⚠️ Node.js version may be too old"
-        fi
-    else
-        echo "⚠️ Not installed (MCP servers unavailable)"
-    fi
-    
-    # Level 6: Claude Code integration
-    echo -n "6. Claude Code integration: "
-    if which claude >/dev/null 2>&1; then
-        echo "✅ Claude Code available"
-    else
-        echo "⚠️ Claude Code not found"
-    fi
-    
-    return $status
-}
+echo "=== Diagnosing agent: $AGENT ==="
 
-verify_dependency_chain
-dependency_status=$?
+FILE=~/.claude/agents/$AGENT.md
 
-if [ $dependency_status -eq 0 ]; then
-    echo "✅ All dependencies satisfied"
+if [ -f "$FILE" ]; then
+    echo "✅ Agent file exists"
+    
+    # Check for trigger keywords
+    echo "Trigger keywords found:"
+    grep -A 5 "## Triggers" "$FILE" | tail -n +2
+    
+    # Check for metadata
+    if head -10 "$FILE" | grep -q "^name:"; then
+        echo "✅ Has metadata"
+    else
+        echo "⚠️ Missing metadata"
+    fi
 else
-    echo "❌ Dependency issues detected - resolve before proceeding"
+    echo "❌ Agent file not found: $FILE"
+    echo "Available agents:"
+    ls ~/.claude/agents/ | sed 's/.md$//'
 fi
 ```
 
-## Emergency Procedures
+## Installation Repair
 
-### Complete System Recovery
+### Quick Fix Script
 
-**Full System Recovery Protocol:**
 ```bash
-# Complete SuperClaude system recovery
-echo "=== SuperClaude Emergency Recovery Protocol ==="
+#!/bin/bash
+# SuperClaude Quick Fix Script
 
-# Step 1: System state backup
-echo "Step 1: Creating system state backup..."
-backup_timestamp=$(date +%Y%m%d_%H%M%S)
-backup_dir=~/superclaude_recovery_$backup_timestamp
+echo "=== SuperClaude Quick Fix ==="
 
-mkdir -p "$backup_dir"
-[ -d ~/.claude/ ] && cp -r ~/.claude/ "$backup_dir/claude_config/"
-[ -d ~/.npm/ ] && cp -r ~/.npm/  "$backup_dir/npm_config/" 2>/dev/null || true
-env | grep -E "CLAUDE|PYTHON|NODE" > "$backup_dir/environment_vars.txt"
-python3 -m pip list > "$backup_dir/python_packages.txt" 2>/dev/null || true
-npm list -g > "$backup_dir/npm_packages.txt" 2>/dev/null || true
+# Check for common issues and fix them
+ISSUES_FOUND=0
 
-echo "Backup created in: $backup_dir"
+# Fix permissions
+echo "Fixing file permissions..."
+chmod 644 ~/.claude/*.md 2>/dev/null
+chmod 644 ~/.claude/**/*.md 2>/dev/null
+chmod 755 ~/.claude ~/.claude/agents ~/.claude/commands ~/.claude/modes 2>/dev/null
 
-# Step 2: Complete cleanup
-echo "Step 2: Performing complete cleanup..."
-rm -rf ~/.claude/
-npm cache clean --force 2>/dev/null || true
-python3 -m pip uninstall SuperClaude -y 2>/dev/null || true
-
-# Step 3: Fresh installation
-echo "Step 3: Fresh SuperClaude installation..."
-python3 -m pip install SuperClaude
-if [ $? -eq 0 ]; then
-    echo "✅ SuperClaude package installed"
-else
-    echo "❌ Package installation failed"
-    exit 1
-fi
-
-# Step 4: Configuration setup
-echo "Step 4: Configuration setup..."
-python3 -m SuperClaude install --fresh
-if [ $? -eq 0 ]; then
-    echo "✅ Configuration installed"
-else
-    echo "❌ Configuration setup failed"
-    exit 1
-fi
-
-# Step 5: MCP server installation (if Node.js available)
-if which node >/dev/null 2>&1; then
-    echo "Step 5: MCP server installation..."
-    python3 -m SuperClaude install --components mcp --force
-    if [ $? -eq 0 ]; then
-        echo "✅ MCP servers installed"
-    else
-        echo "⚠️ MCP server installation failed - continuing without MCP"
+# Check for missing directories
+for dir in agents commands modes; do
+    if [ ! -d ~/.claude/$dir ]; then
+        echo "⚠️ Missing directory: $dir"
+        echo "  Run: SuperClaude install --components $dir"
+        ((ISSUES_FOUND++))
     fi
-else
-    echo "Step 5: Skipping MCP servers (Node.js not available)"
+done
+
+# Check for empty files
+EMPTY_FILES=$(find ~/.claude -name "*.md" -type f -size 0 2>/dev/null)
+if [ -n "$EMPTY_FILES" ]; then
+    echo "⚠️ Found empty files:"
+    echo "$EMPTY_FILES"
+    echo "  Run: SuperClaude install --force"
+    ((ISSUES_FOUND++))
 fi
 
-# Step 6: Verification
-echo "Step 6: Installation verification..."
-if python3 -m SuperClaude --version && [ -f ~/.claude/CLAUDE.md ]; then
-    echo "✅ Recovery completed successfully"
-    echo "Backup available at: $backup_dir"
+if [ $ISSUES_FOUND -eq 0 ]; then
+    echo "✅ No issues found"
 else
-    echo "❌ Recovery failed - check logs and backup"
-    exit 1
+    echo "Found $ISSUES_FOUND issues - see recommendations above"
 fi
 ```
 
-**Disaster Recovery Checklist:**
+### Complete Reinstallation
+
 ```bash
-# Disaster recovery checklist and procedures
-echo "=== Disaster Recovery Checklist ==="
+# Complete clean reinstall
+echo "=== Clean Reinstall ==="
 
-cat << 'EOF'
-SuperClaude Disaster Recovery Checklist:
+# Backup current installation
+BACKUP_DIR=~/.claude.backup.$(date +%Y%m%d_%H%M%S)
+if [ -d ~/.claude ]; then
+    cp -r ~/.claude "$BACKUP_DIR"
+    echo "✅ Backed up to $BACKUP_DIR"
+fi
 
-PRE-RECOVERY ASSESSMENT:
-□ Identify specific failure symptoms
-□ Document error messages and conditions
-□ Check system resource availability
-□ Verify backup existence and integrity
+# Remove current installation
+rm -rf ~/.claude
 
-RECOVERY STEPS:
-□ Create system state backup
-□ Stop all Claude Code sessions
-□ Clear corrupted configurations
-□ Perform fresh installation
-□ Verify basic functionality
-□ Restore custom configurations (if applicable)
-□ Test core operations
-□ Reinstall MCP servers (if needed)
-□ Validate full functionality
+# Reinstall
+SuperClaude install
 
-POST-RECOVERY VERIFICATION:
-□ Test SuperClaude version command
-□ Verify configuration file integrity
-□ Test basic operations in Claude Code
-□ Validate MCP server functionality
-□ Document recovery process and lessons learned
-
-PREVENTION MEASURES:
-□ Regular configuration backups
-□ System resource monitoring
-□ Update management procedures
-□ Recovery procedure documentation
-□ Test recovery procedures periodically
-EOF
+# Verify installation
+if [ -f ~/.claude/CLAUDE.md ]; then
+    echo "✅ Reinstallation successful"
+else
+    echo "❌ Reinstallation failed"
+    echo "Restoring backup..."
+    cp -r "$BACKUP_DIR" ~/.claude
+fi
 ```
 
-## Related Resources
+## What These Diagnostics DON'T Do
 
-### Diagnostic Tool References
-- **System Monitoring**: `htop`, `iostat`, `netstat`, `free`, `df`
-- **Process Analysis**: `ps`, `top`, `pgrep`, `lsof`
-- **Network Diagnostics**: `ping`, `curl`, `wget`, `ss`
-- **Log Analysis**: `journalctl`, `tail`, `grep`, `awk`
+### Not Applicable Concepts
 
-### SuperClaude-Specific Resources
-- **Common Issues**: [common-issues.md](./common-issues.md) - Basic troubleshooting procedures
-- **MCP Server Guide**: [mcp-server-guide.md](./mcp-server-guide.md) - MCP-specific diagnostics
-- **Installation Guide**: [../Getting-Started/installation.md](../Getting-Started/installation.md) - Setup procedures
-- **User Guide**: [../User-Guide/](../User-Guide/) - Operational documentation
+- **CPU/Memory Monitoring**: No processes to monitor
+- **Performance Metrics**: No code execution to measure
+- **Network Analysis**: No network operations (except MCP)
+- **Process Management**: No running processes
+- **Resource Optimization**: No resources consumed
+- **Execution Timing**: No code executes
 
-### Support and Community
-- **GitHub Issues**: [Technical support and bug reporting](https://github.com/SuperClaude-Org/SuperClaude_Framework/issues)
-- **GitHub Discussions**: [Community support and best practices](https://github.com/SuperClaude-Org/SuperClaude_Framework/discussions)
-- **Contributing Guide**: [../Developer-Guide/contributing-code.md](../Developer-Guide/contributing-code.md) - Development contribution
+### Focus on What Matters
 
----
+- **File Presence**: Are context files installed?
+- **File Integrity**: Are files readable and complete?
+- **Configuration Validity**: Is JSON syntax correct?
+- **Directory Structure**: Is organization correct?
+- **Permissions**: Can Claude Code read the files?
 
-**Diagnostic Philosophy**: Approach problems systematically - start with basic verification, isolate components, test hypotheses, and apply targeted solutions. Document findings for future reference and community benefit.
+## Summary
 
-**Emergency Contact**: For critical system failures, use the complete recovery protocol above. If issues persist after recovery, document the full diagnostic output and seek community support through GitHub issues.
+SuperClaude diagnostics are simple: verify files exist, check they're readable, and ensure configurations are valid. Since it's just text files that Claude Code reads, there's no complex system monitoring or performance analysis needed. If files are present and readable, SuperClaude is working.

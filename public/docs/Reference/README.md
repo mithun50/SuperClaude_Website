@@ -1,8 +1,8 @@
 # SuperClaude Framework Reference Documentation
 
-**Complete Navigation Hub**: Your definitive guide to mastering SuperClaude Framework with structured learning paths, comprehensive references, and expert guidance for all skill levels.
+**Navigation Hub**: Structured learning paths and technical references for all skill levels.
 
-**Documentation Status**: ✅ **VERIFIED SuperClaude v4.0** - All content verified for accuracy and completeness.
+**Documentation Status**: ✅ **Status: Current** - All content verified for accuracy and completeness.
 
 ## How to Use This Reference Library
 
@@ -19,19 +19,18 @@ This documentation is organized for **progressive learning** with multiple entry
 
 ## Documentation Navigation Matrix
 
-| Document | Purpose | Target Audience | Complexity | Time Investment |
+| Document | Purpose | Target Audience | Complexity |  |
 |----------|---------|-----------------|------------|-----------------|
-| **[quick-start-practices.md](./quick-start-practices.md)** | Essential foundations and first steps | New users, onboarding | **Basic** | 30-60 minutes |
-| **[basic-examples.md](./basic-examples.md)** | Copy-paste ready commands and patterns | All users, quick reference | **Basic** | 15-30 minutes |
-| **[examples-cookbook.md](./examples-cookbook.md)** | Recipe collection hub and organization | All users, navigation | **Reference** | 5 minutes |
+| **[basic-examples.md](./basic-examples.md)** | Copy-paste ready commands and patterns | All users, quick reference | **Basic** |  |
+| **[examples-cookbook.md](./examples-cookbook.md)** | Recipe collection hub and organization | All users, navigation | **Reference** |  |
 | **[common-issues.md](./common-issues.md)** | Essential troubleshooting and solutions | All users, problem-solving | **Basic** | As needed |
-| **[mcp-server-guide.md](./mcp-server-guide.md)** | MCP server configuration and usage | Technical users, integration | **Intermediate** | 45-90 minutes |
-| **[optimization-guide.md](./optimization-guide.md)** | Performance tuning and efficiency | All levels, improvement | **Variable** | 60-120 minutes |
-| **[advanced-patterns.md](./advanced-patterns.md)** | Expert coordination and orchestration | Experienced users | **Advanced** | 90-150 minutes |
-| **[advanced-workflows.md](./advanced-workflows.md)** | Complex multi-agent orchestration | Expert users | **Advanced** | 120-180 minutes |
-| **[integration-patterns.md](./integration-patterns.md)** | Framework and system integration | Architects, experts | **Advanced** | 90-150 minutes |
+| **[mcp-server-guide.md](./mcp-server-guide.md)** | MCP server configuration and usage | Technical users, integration | **Intermediate** |  |
+
+| **[advanced-patterns.md](./advanced-patterns.md)** | Expert coordination and orchestration | Experienced users | **Advanced** |  |
+| **[advanced-workflows.md](./advanced-workflows.md)** | Complex multi-agent orchestration | Expert users | **Advanced** |  |
+| **[integration-patterns.md](./integration-patterns.md)** | Framework and system integration | Architects, experts | **Advanced** |  |
 | **[troubleshooting.md](./troubleshooting.md)** | Comprehensive diagnostic guide | All levels, deep debugging | **Variable** | As needed |
-| **[diagnostic-reference.md](./diagnostic-reference.md)** | Advanced debugging and analysis | Expert users, complex issues | **Advanced** | 60-120 minutes |
+| **[diagnostic-reference.md](./diagnostic-reference.md)** | Advanced debugging and analysis | Expert users, complex issues | **Advanced** |  |
 
 ---
 
@@ -41,7 +40,7 @@ This documentation is organized for **progressive learning** with multiple entry
 **Goal**: Establish confident SuperClaude usage with essential workflows
 
 ```
-Day 1-2: quick-start-practices.md
+Day 1-2: ../Getting-Started/quick-start.md
    ↓ Foundation building and first commands
 Day 3-4: basic-examples.md  
    ↓ Practical application and pattern recognition
@@ -57,7 +56,7 @@ Day 5-7: common-issues.md
 ```
 Week 2: advanced-patterns.md
    ↓ Multi-agent coordination and orchestration mastery
-Week 3: optimization-guide.md + mcp-server-guide.md
+Week 3: mcp-server-guide.md + advanced-workflows.md
    ↓ Performance excellence and technical configuration
 ```
 
@@ -158,27 +157,27 @@ Advanced Analysis: diagnostic-reference.md
 
 ## Problem-Solving Quick Reference
 
-### Immediate Issues (< 5 minutes)
+### Immediate Issues
 - **Command not working**: Check [common-issues.md](./common-issues.md) → Common SuperClaude Problems
-- **Session lost**: Use `/sc:load` → See [quick-start-practices.md](./quick-start-practices.md) → Session Management
+- **Session lost**: Use `/sc:load` → See [Session Management](../User-Guide/session-management.md)
 - **Flag confusion**: Check [basic-examples.md](./basic-examples.md) → Flag Usage Examples
 
-### Development Blockers (15-30 minutes)
-- **Performance slow**: See [optimization-guide.md](./optimization-guide.md) → Performance Patterns
+### Development Blockers
+- **Performance slow**: See [Advanced Workflows](./advanced-workflows.md) → Performance Patterns
 - **Complex debugging**: Use [troubleshooting.md](./troubleshooting.md) → Systematic Debugging
 - **Integration issues**: Check [integration-patterns.md](./integration-patterns.md) → Framework Patterns
 
-### System-Level Issues (45+ minutes)
+### System-Level Issues
 - **Architecture problems**: Use [advanced-workflows.md](./advanced-workflows.md) → System Design
 - **Expert debugging**: Apply [diagnostic-reference.md](./diagnostic-reference.md) → Advanced Analysis
-- **Custom workflow needs**: Study [advanced-patterns.md](./advanced-patterns.md) → Custom Orchestration
+- **Custom workflow needs**: Study [advanced-patterns.md](./advanced-patterns.md) → Custom Orchestration [advanced-patterns.md](./advanced-patterns.md) → Custom Orchestration
 
 ---
 
 ## Documentation Health & Verification
 
 ### Quality Assurance
-- ✅ **Commands Tested**: All examples verified against SuperClaude v4.0
+- ✅ **Commands Tested**: All examples tested and functional
 - ✅ **Patterns Proven**: Real-world usage validation in production environments  
 - ✅ **Cross-References**: Internal links verified and maintained
 - ✅ **Regular Updates**: Documentation synchronized with framework evolution
@@ -232,7 +231,7 @@ Found outdated information or broken examples?
 ### Specialized Workflows
 - **DevOps Integration**: [advanced-workflows.md](./advanced-workflows.md) → CI/CD Patterns
 - **Testing Strategies**: [advanced-patterns.md](./advanced-patterns.md) → Testing Orchestration
-- **Performance Engineering**: [optimization-guide.md](./optimization-guide.md) → Advanced Optimization
+- **Performance Engineering**: [Advanced Patterns](./advanced-patterns.md) → Complex Coordination
 - **Security Implementation**: [integration-patterns.md](./integration-patterns.md) → Security Patterns
 
 ### Community & Support
@@ -243,7 +242,7 @@ Found outdated information or broken examples?
 
 ---
 
-**Start Your Journey**: New to SuperClaude? Begin with [quick-start-practices.md](./quick-start-practices.md) for immediate productivity gains.
+**Start Your Journey**: New to SuperClaude? Begin with [Quick Start Guide](../Getting-Started/quick-start.md) for immediate productivity gains.
 
 **Need Answers Now**: Jump to [basic-examples.md](./basic-examples.md) for copy-paste solutions.
 

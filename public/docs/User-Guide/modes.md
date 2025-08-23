@@ -1,30 +1,7 @@
 # SuperClaude Behavioral Modes Guide 🧠
 
-## ✅ Verification Status
-- **SuperClaude Version**: v4.0+ Compatible
-- **Last Tested**: 2025-01-16
-- **Test Environment**: Linux/Windows/macOS
-- **Mode Activation**: ✅ All Verified
-
-## 🧪 Testing Mode Activation
-
-Before using this guide, verify modes activate correctly:
-
-```bash
-# Test Brainstorming mode
-/sc:brainstorm "vague project idea"
-# Expected: Should ask discovery questions, not give immediate solutions
-
-# Test Task Management mode  
-/sc:implement "complex multi-file feature"
-# Expected: Should break down into phases and coordinate steps
-
-# Test Token Efficiency mode
-/sc:analyze large-project/ --uc
-# Expected: Should use symbols and compressed output format
-```
-
-**If tests fail**: Modes activate automatically based on request complexity - check behavior patterns below
+## ✅ Quick Verification
+Test modes by using `/sc:` commands - they activate automatically based on task complexity. For full command reference, see [Commands Guide](commands.md).
 
 ## Quick Reference Table
 
@@ -33,15 +10,15 @@ Before using this guide, verify modes activate correctly:
 | **🧠 Brainstorming** | Interactive discovery | "brainstorm", "maybe", vague requests | Socratic questions, requirement elicitation | New project planning, unclear requirements |
 | **🔍 Introspection** | Meta-cognitive analysis | Error recovery, "analyze reasoning" | Transparent thinking markers (🤔, 🎯, 💡) | Debugging, learning, optimization |
 | **📋 Task Management** | Complex coordination | >3 steps, >2 directories | Phase breakdown, memory persistence | Multi-step operations, project management |
-| **🎯 Orchestration** | Intelligent tool selection | Multi-tool ops, >75% resources | Optimal tool routing, parallel execution | Complex analysis, performance optimization |
-| **⚡ Token Efficiency** | Compressed communication | >75% context usage, `--uc` flag | Symbol systems, 30-50% token reduction | Resource constraints, large operations |
-| **🎨 Standard** | Balanced default | Simple tasks, no complexity triggers | Clear professional communication | General development, straightforward tasks |
+| **🎯 Orchestration** | Intelligent tool selection | Multi-tool ops, high resource usage | Optimal tool routing, parallel execution | Complex analysis, performance optimization |
+| **⚡ Token Efficiency** | Compressed communication | High context usage, `--uc` flag | Symbol systems, estimated 30-50% token reduction | Resource constraints, large operations |
+
 
 ---
 
 ## Getting Started (2-Minute Overview)
 
-**Modes activate automatically** - you don't need to think about them. They adapt Claude Code's behavior based on your task complexity and context.
+**Modes activate through behavioral instructions** - Claude Code reads context files to determine which mode behaviors to adopt based on your task patterns and complexity.
 
 **Quick Examples:**
 ```bash
@@ -187,7 +164,7 @@ Task Management Approach:
 
 **Auto-Activation Triggers:**
 - Multi-tool operations requiring sophisticated coordination
-- Performance constraints (>75% resource usage)
+- Performance constraints (high resource usage)
 - Parallel execution opportunities (>3 independent files/operations)
 - Complex routing decisions with multiple valid tool approaches
 
@@ -195,7 +172,7 @@ Task Management Approach:
 - **Intelligent Tool Routing**: Selects optimal MCP servers and native tools for each task type
 - **Resource Awareness**: Adapts approach based on system constraints and availability
 - **Parallel Optimization**: Identifies independent operations for concurrent execution
-- **Performance Focus**: Maximizes speed and effectiveness through coordinated tool usage
+- **Coordination Focus**: Optimizes tool selection and usage through coordinated execution
 - **Adaptive Fallback**: Switches tools gracefully when preferred options are unavailable
 
 **Example Experience:**
@@ -207,7 +184,7 @@ Orchestration Approach:
  ⚡ Phase 2: Morphllm (pattern edits) + Magic (UI components) 
  🧪 Phase 3: Playwright (testing) + Context7 (documentation patterns)
  🔄 Parallel execution: 3 tools working simultaneously
- 📈 Efficiency gain: 60% faster than sequential approach"
+\"
 ```
 
 **Works Best With:**
@@ -219,10 +196,10 @@ Orchestration Approach:
 
 ### ⚡ Token Efficiency Mode - Compressed Communication
 
-**Purpose**: Achieve 30-50% token reduction through symbol systems while preserving information quality.
+**Purpose**: Achieve estimated 30-50% token reduction through symbol systems while preserving information quality.
 
 **Auto-Activation Triggers:**
-- Context usage >75% approaching limits
+- High context usage approaching limits
 - Large-scale operations requiring resource efficiency
 - User explicit flags: `--uc`, `--ultracompressed`
 - Complex analysis workflows with multiple outputs
@@ -232,7 +209,7 @@ Orchestration Approach:
 - **Technical Abbreviation**: Context-aware compression for repeated technical terms
 - **Structured Density**: Bullet points, tables, and concise formatting over verbose paragraphs
 - **Information Preservation**: Maintains ≥95% information quality despite compression
-- **Scannable Format**: Optimizes for quick comprehension and task completion
+- **Structured Format**: Organized for clarity and task completion
 
 **Example Experience:**
 ```
@@ -331,7 +308,7 @@ Standard Approach: Consistent, professional baseline for all tasks
 
 **When Modes Activate:**
 1. **Complexity Threshold**: >3 files → Task Management
-2. **Resource Pressure**: >75% usage → Token Efficiency  
+2. **Resource Pressure**: High context usage → Token Efficiency  
 3. **Multi-Tool Need**: Complex analysis → Orchestration
 4. **Uncertainty**: Vague requirements → Brainstorming
 5. **Error Recovery**: Problems → Introspection
@@ -405,7 +382,7 @@ Standard Approach: Consistent, professional baseline for all tasks
 | **Complex Scope** | >3 files or >2 directories | 📋 Task Management | Phase coordination |
 | **Multi-Tool Need** | Analysis + Implementation | 🎯 Orchestration | Tool optimization |
 | **Error Recovery** | "This isn't working as expected" | 🔍 Introspection | Transparent reasoning |
-| **Resource Pressure** | >75% context usage | ⚡ Token Efficiency | Symbol compression |
+| **Resource Pressure** | High context usage | ⚡ Token Efficiency | Symbol compression |
 | **Simple Task** | "Fix this function" | 🎨 Standard | Clear, direct approach |
 
 ### Manual Override Commands
@@ -425,13 +402,17 @@ Standard Approach: Consistent, professional baseline for all tasks
 
 ---
 
-## 🚨 Quick Troubleshooting
+## Troubleshooting
 
-### Common Issues (< 2 minutes)
+For troubleshooting help, see:
+- [Common Issues](../Reference/common-issues.md) - Quick fixes for frequent problems
+- [Troubleshooting Guide](../Reference/troubleshooting.md) - Comprehensive problem resolution
+
+### Common Issues
 - **Mode not activating**: Use manual flags: `--brainstorm`, `--introspect`, `--uc`
 - **Wrong mode active**: Check complexity triggers and keywords in request
 - **Mode switching unexpectedly**: Normal behavior based on task evolution
-- **Performance impact**: Modes optimize performance, shouldn't slow execution
+- **Execution impact**: Modes optimize tool usage, shouldn't affect execution
 - **Mode conflicts**: Check flag priority rules in [Flags Guide](flags.md)
 
 ### Immediate Fixes
@@ -542,7 +523,7 @@ After applying mode fixes, test with:
 - **Mode not activating** → Use manual flags: `--brainstorm`, `--introspect`, `--uc`
 - **Wrong mode active** → Check complexity triggers and keywords in request
 - **Mode switching unexpectedly** → Normal behavior based on task evolution  
-- **Performance impact** → Modes optimize performance, shouldn't slow execution
+- **Execution impact** → Modes optimize tool usage, shouldn't affect execution
 - **Mode conflicts** → Check flag priority rules in [Flags Guide](flags.md)
 
 ## Frequently Asked Questions
@@ -564,8 +545,8 @@ A: Yes, use manual flags to override automatic detection:
 /sc:command --uc            # Compress output
 ```
 
-**Q: Do modes affect performance?**
-A: Modes enhance performance through optimization:
+**Q: Do modes affect execution?**
+A: Modes optimize tool usage through coordination:
 - **Token Efficiency**: 30-50% context reduction
 - **Orchestration**: Parallel processing
 - **Task Management**: Prevents rework through systematic planning
@@ -580,7 +561,7 @@ A: Yes, modes are designed to complement each other:
 
 ## Summary
 
-SuperClaude's 6 behavioral modes create an **intelligent adaptation system** that matches your needs automatically:
+SuperClaude's 5 behavioral modes create an **intelligent adaptation system** that matches your needs automatically:
 
 - **🧠 Brainstorming**: Transforms vague ideas into clear requirements
 - **🔍 Introspection**: Provides transparent reasoning for learning and debugging
@@ -598,7 +579,7 @@ SuperClaude's 6 behavioral modes create an **intelligent adaptation system** tha
 **Learning Progression:**
 
 **🌱 Essential (Week 1)**
-- [Quick Start Guide](../Getting-Started/quick-start.md) - Experience modes naturally
+- [Quick Start Guide](../Getting-Started/quick-start.md) - Mode activation examples
 - [Commands Reference](commands.md) - Commands automatically activate modes
 - [Installation Guide](../Getting-Started/installation.md) - Set up behavioral modes
 
@@ -610,7 +591,7 @@ SuperClaude's 6 behavioral modes create an **intelligent adaptation system** tha
 **🌲 Advanced (Month 2+)**
 - [MCP Servers](mcp-servers.md) - Mode integration with enhanced capabilities
 - [Session Management](session-management.md) - Task Management mode workflows  
-- [Best Practices](../Reference/quick-start-practices.md) - Mode optimization strategies
+- [Getting Started](../Getting-Started/quick-start.md) - Mode usage patterns
 
 **🔧 Expert**
 - [Technical Architecture](../Developer-Guide/technical-architecture.md) - Mode implementation details
@@ -620,4 +601,4 @@ SuperClaude's 6 behavioral modes create an **intelligent adaptation system** tha
 - **Brainstorming**: [Requirements Discovery Patterns](../Reference/examples-cookbook.md#requirements)
 - **Task Management**: [Session Management Guide](session-management.md)
 - **Orchestration**: [MCP Servers Guide](mcp-servers.md)
-- **Token Efficiency**: [Performance Optimization](../Reference/quick-start-practices.md#efficiency)
+- **Token Efficiency**: [Command Fundamentals](commands.md#token-efficiency)

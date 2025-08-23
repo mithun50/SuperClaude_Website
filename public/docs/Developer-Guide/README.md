@@ -1,25 +1,25 @@
 # SuperClaude Framework Developer Guide
 
-A comprehensive documentation suite for SuperClaude Framework development, testing, and architecture.
+A documentation suite for understanding and extending the SuperClaude Context-Oriented Configuration Framework.
 
 ## Documentation Overview
 
-This Developer Guide provides complete technical documentation for SuperClaude Framework development, organized into three interconnected documents:
+This Developer Guide provides documentation for understanding SuperClaude's context architecture and how to extend it:
 
 ### [Contributing Code Guide](contributing-code.md)
-**Purpose**: Development workflows, contribution guidelines, and coding standards  
-**Audience**: Contributors, developers, and framework maintainers  
-**Key Topics**: Development setup, component creation, git workflows, security practices
+**Purpose**: Guidelines for contributing context files and framework improvements  
+**Audience**: Contributors and framework maintainers  
+**Key Topics**: Adding context files, naming conventions, documentation standards
 
-### [Technical Architecture Guide](technical-architecture.md)
-**Purpose**: Deep system architecture, design patterns, and technical specifications  
-**Audience**: System architects, advanced developers, and framework designers  
-**Key Topics**: Agent coordination, MCP integration, performance systems, extensibility
+### [Context Architecture Guide](technical-architecture.md)
+**Purpose**: Understanding how context files work and are structured  
+**Audience**: Anyone wanting to understand or extend SuperClaude  
+**Key Topics**: Context file structure, import system, agent/command patterns
 
-### [Testing & Debugging Guide](testing-debugging.md)
-**Purpose**: Testing procedures, debugging techniques, and quality validation  
-**Audience**: QA engineers, developers, and testing specialists  
-**Key Topics**: Test frameworks, performance testing, security validation, troubleshooting
+### [Verification & Troubleshooting Guide](testing-debugging.md)
+**Purpose**: Verifying installation and troubleshooting context file issues  
+**Audience**: Users and maintainers  
+**Key Topics**: File verification, common issues, diagnostic commands
 
 ### [Documentation Index](documentation-index.md)
 **Purpose**: Comprehensive navigation guide and topic-based organization  
@@ -45,17 +45,26 @@ This Developer Guide provides complete technical documentation for SuperClaude F
 
 ## Key Framework Concepts
 
-### Meta-Framework Architecture
-SuperClaude operates as an enhancement layer for Claude Code through instruction injection rather than code modification, maintaining compatibility while adding sophisticated orchestration capabilities.
+### Context-Oriented Configuration
+SuperClaude is a collection of `.md` instruction files that Claude Code reads to modify its behavior. It is NOT executing software.
 
-### Agent Orchestration
-Intelligent coordination of 13 specialized AI agents through communication protocols, decision hierarchies, and collaborative synthesis patterns.
+**IMPORTANT**: SuperClaude is NOT a CLI tool or executable software. When you see `/sc:` commands in documentation, these are **context trigger patterns** you type in Claude Code conversations, not terminal commands.
+
+### Agent Context Files
+Specialized instruction sets that provide domain expertise when activated by `@agent-[name]` or automatically by keywords.
+
+### Command Context Files
+Workflow patterns triggered by `/sc:[command]` **context patterns** (not CLI commands) that guide Claude Code through structured development tasks when you type them in Claude Code conversations.
 
 ### MCP Integration
-Seamless integration with 6 external MCP servers (context7, sequential, magic, playwright, morphllm, serena) through protocol abstraction and health monitoring.
+External tools (actual software) that can be configured to provide additional capabilities like documentation lookup or code analysis.
 
-### Behavioral Programming
-AI behavior modification through structured `.md` configuration files, enabling dynamic system customization without code changes.
+## What SuperClaude Is NOT
+
+- ❌ **Not Software**: No code executes, no processes run
+- ❌ **Not Testable**: Context files are instructions, not functions  
+- ❌ **Not Optimizable**: No performance to measure or improve
+- ❌ **Not Persistent**: Each Claude conversation is independent
 
 ## Documentation Features
 
@@ -87,7 +96,7 @@ Security considerations are embedded throughout all documentation, from developm
 
 ✅ **Phase 1 Complete**: Critical issues resolved, basic structure established  
 ✅ **Phase 2 Complete**: Cross-document consistency, navigation improvements, security integration  
-✅ **Phase 3 Complete**: Advanced examples, visual diagrams, performance metrics, enhanced architecture documentation  
+✅ **Phase 3 Complete**: Advanced examples, visual diagrams, enhanced architecture documentation  
 ✅ **Phase 4 Complete**: Accessibility improvements, comprehensive glossaries, skill level guidance, professional polish
 
 ### Accessibility & Quality Enhancements (Phase 4)
@@ -99,32 +108,31 @@ Security considerations are embedded throughout all documentation, from developm
 ## Getting Started
 
 ### Prerequisites
-- Python 3.8+ with development tools
-- Git for version control  
-- Claude Code installed and working
-- Node.js 16+ for MCP server development
+- Python 3.8+ (for installation tool)
+- Claude Code installed
+- Optional: Node.js 16+ for MCP servers
 
-### Quick Setup
+### Understanding the Framework
 ```bash
-# Clone and setup development environment
-git clone https://github.com/SuperClaude-Org/SuperClaude_Framework.git
-cd SuperClaude_Framework
+# Check installation
+ls ~/.claude/
+# You'll see context files, not executable code
 
-# Follow setup instructions in Contributing Code Guide
-python -m venv venv
-source venv/bin/activate
-pip install -e ".[dev]"
+# View a command context
+cat ~/.claude/commands/implement.md
+# You'll see instructions for Claude, not code
 
-# Verify installation
-python -m SuperClaude --version
+# View an agent context  
+cat ~/.claude/agents/python-expert.md
+# You'll see expertise definitions, not programs
 ```
 
-### Development Workflow
-1. **Read Documentation**: Review relevant sections for your contribution type
-2. **Setup Environment**: Follow [development setup guide](contributing-code.md#development-setup)
-3. **Understand Architecture**: Review [system architecture](technical-architecture.md#architecture-overview)  
-4. **Write Tests**: Implement tests using [testing framework](testing-debugging.md#testing-framework)
-5. **Submit Contribution**: Follow [contribution workflow](contributing-code.md#development-workflow)
+### Extending SuperClaude
+1. **Add Commands**: Create new `.md` files in `~/.claude/commands/`
+2. **Add Agents**: Create new `.md` files in `~/.claude/agents/`
+3. **Add Modes**: Create new `.md` files in `~/.claude/modes/`
+
+No compilation, no testing, no deployment - just add context files and Claude Code will read them automatically.
 
 ## Support and Resources
 

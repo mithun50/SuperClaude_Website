@@ -517,7 +517,7 @@ npm update -g
 
 # Verification
 time node -e "console.log('Node.js speed test')"
-# Should complete quickly
+# Should complete successfully
 ```
 
 **Issue: MCP Server Memory Leaks**
@@ -529,7 +529,7 @@ top | grep node  # Monitor Node.js processes
 ps aux --sort=-%mem | head -10
 
 # Solution 1: Regular Claude Code session restarts
-# Restart sessions every few hours during heavy usage
+# Restart sessions periodically during heavy usage
 
 # Solution 2: Monitor specific servers
 htop  # Monitor individual MCP server processes
