@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,6 +8,7 @@ import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
 import Sidebar from '../components/Sidebar';
 import { useSidebar } from '../context/SidebarContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 function DocViewerPage() {
   const { category, file } = useParams();
@@ -16,7 +17,12 @@ function DocViewerPage() {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const { openSidebar } = useSidebar();
+  const { theme } = useContext(ThemeContext);
   const touchStartRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-color-mode', theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleTouchStart = (e) => {
@@ -89,8 +95,8 @@ function DocViewerPage() {
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
-        <main className="flex-1">
-          <div className="prose dark:prose-invert overflow-x-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">
+          <div className="markdown-body bg-secondary p-6 rounded-lg">
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
