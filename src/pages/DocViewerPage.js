@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
+import Sidebar from '../components/Sidebar';
 
 function DocViewerPage() {
   const { category, file } = useParams();
@@ -57,55 +58,56 @@ function DocViewerPage() {
 
   return (
     <div className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="overflow-x-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
+        <Sidebar />
+        <main className="flex-1 overflow-x-auto">
           <div className="prose dark:prose-invert max-w-none">
             <ReactMarkdown
               children={markdown}
-            remarkPlugins={[remarkGfm]}
-            components={{
-              code({ node, inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || '');
-                if (!inline && match) {
-                  const code = node.children[0].value;
+              remarkPlugins={[remarkGfm]}
+              components={{
+                code({ node, inline, className, children, ...props }) {
+                  const match = /language-(\w+)/.exec(className || '');
+                  if (!inline && match) {
+                    const code = node.children[0].value;
+                    return (
+                      <CodeBlock
+                        language={match[1]}
+                        value={code}
+                        {...props}
+                      />
+                    );
+                  }
                   return (
-                    <CodeBlock
-                      language={match[1]}
-                      value={code}
-                      {...props}
-                    />
-                  );
-                }
-                return (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
-                );
-              },
-              a({ node, children, ...props }) {
-                const href = props.href;
-                if (href && href.includes('.md')) {
-                  const [path, hash] = href.split('#');
-                  const newName = path.split('/').pop().replace('.md', '');
-                  const to = hash
-                    ? `/docs/${category}/${newName}#${hash}`
-                    : `/docs/${category}/${newName}`;
-                  return (
-                    <Link to={to} {...props}>
+                    <code className={className} {...props}>
                       {children}
-                    </Link>
+                    </code>
                   );
-                }
-                return (
-                  <a {...props} target="_blank" rel="noopener noreferrer">
-                    {children}
-                  </a>
-                );
-              },
-            }}
-          />
+                },
+                a({ node, children, ...props }) {
+                  const href = props.href;
+                  if (href && href.includes('.md')) {
+                    const [path, hash] = href.split('#');
+                    const newName = path.split('/').pop().replace('.md', '');
+                    const to = hash
+                      ? `/docs/${category}/${newName}#${hash}`
+                      : `/docs/${category}/${newName}`;
+                    return (
+                      <Link to={to} {...props}>
+                        {children}
+                      </Link>
+                    );
+                  }
+                  return (
+                    <a {...props} target="_blank" rel="noopener noreferrer">
+                      {children}
+                    </a>
+                  );
+                },
+              }}
+            />
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
