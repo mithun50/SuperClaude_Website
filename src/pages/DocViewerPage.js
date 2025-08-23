@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -6,7 +6,7 @@ import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
 import Sidebar from '../components/Sidebar';
-import MenuButton from '../components/MenuButton';
+import { useSidebar } from '../context/SidebarContext';
 
 function DocViewerPage() {
   const { category, file } = useParams();
@@ -14,6 +14,33 @@ function DocViewerPage() {
   const [doc, setDoc] = useState(null);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const { openSidebar } = useSidebar();
+  const touchStartRef = useRef(null);
+
+  useEffect(() => {
+    const handleTouchStart = (e) => {
+      touchStartRef.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e) => {
+      if (touchStartRef.current === null) {
+        return;
+      }
+      const touchEnd = e.changedTouches[0].clientX;
+      if (touchStartRef.current < 50 && touchEnd - touchStartRef.current > 50) {
+        openSidebar();
+      }
+      touchStartRef.current = null;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [openSidebar]);
 
   useEffect(() => {
     if (location.hash) {
@@ -62,7 +89,6 @@ function DocViewerPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1 overflow-x-auto">
-          <MenuButton />
           <div className="prose dark:prose-invert max-w-none">
             <ReactMarkdown
               children={markdown}

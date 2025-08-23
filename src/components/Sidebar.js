@@ -6,7 +6,7 @@ import { useSidebar } from '../context/SidebarContext';
 import { cn } from '../lib/utils';
 
 const Sidebar = () => {
-  const { isOpen, toggleSidebar } = useSidebar();
+  const { isOpen, closeSidebar, toggleSidebar } = useSidebar();
 
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
@@ -25,7 +25,7 @@ const Sidebar = () => {
     >
       <div className="flex justify-between items-center p-4 lg:hidden">
         <h3 className="text-lg font-semibold">Menu</h3>
-        <button onClick={toggleSidebar} className="p-2 rounded-md hover:bg-muted">
+        <button onClick={closeSidebar} className="p-2 rounded-md hover:bg-muted">
           <X size={20} />
         </button>
       </div>
@@ -40,11 +40,7 @@ const Sidebar = () => {
                     to={`/docs/${doc.category}/${doc.name}`}
                     className="block py-1 text-muted-foreground hover:text-foreground"
                     activeClassName="text-foreground font-semibold"
-                    onClick={() => {
-                      if (isOpen) {
-                        toggleSidebar();
-                      }
-                    }}
+                    onClick={closeSidebar}
                   >
                     {doc.title}
                   </NavLink>

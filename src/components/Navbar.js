@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Sun, Moon, Menu, X, Home, FileText, Users, Info } from 'lucide-react';
 import { ThemeContext } from '../context/ThemeContext';
+import MenuButton from './MenuButton';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const location = useLocation();
+  const isDocPage = location.pathname.startsWith('/docs');
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -38,6 +41,7 @@ function Navbar() {
             ))}
           </div>
           <div className="flex-shrink-0 flex items-center space-x-2">
+            {isDocPage && <MenuButton />}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-foreground hover:bg-secondary transition-colors duration-300"

@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import DocCard from '../components/DocCard';
 import Sidebar from '../components/Sidebar';
-import MenuButton from '../components/MenuButton';
+import { useSidebar } from '../context/SidebarContext';
 import docsMap from '../docs-map.json';
 
 function DocPage() {
+  const { openSidebar } = useSidebar();
+  const touchStartRef = useRef(null);
+
+  useEffect(() => {
+    const handleTouchStart = (e) => {
+      touchStartRef.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e) => {
+      if (touchStartRef.current === null) {
+        return;
+      }
+      const touchEnd = e.changedTouches[0].clientX;
+      if (touchStartRef.current < 50 && touchEnd - touchStartRef.current > 50) {
+        openSidebar();
+      }
+      touchStartRef.current = null;
+    };
+
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [openSidebar]);
+
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
       acc[doc.category] = [];
@@ -18,7 +46,6 @@ function DocPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1">
-          <MenuButton />
           <div className="text-center">
             <h2 className="text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">
               Documentation
