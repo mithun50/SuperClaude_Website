@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ContributorCard from '../components/ContributorCard';
 
 const excludedContributors = ['mithun50', 'NomenAK'];
 
@@ -49,19 +50,7 @@ function ContributorsPage() {
   const ContributorList = ({ contributors }) => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
       {contributors.map((contributor) => (
-        <a
-          key={contributor.id}
-          href={contributor.html_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group"
-        >
-          <div className="p-4 rounded-lg text-center transition-all duration-300 transform group-hover:scale-110 border border-light-accent dark:border-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent">
-            <img src={contributor.avatar_url} alt={contributor.login} className="w-24 h-24 rounded-full mx-auto mb-4" />
-            <p className="font-semibold truncate text-light-text dark:text-dark-text">{contributor.name || contributor.login}</p>
-            <p className="text-xs text-light-text/80 dark:text-dark-text/80">{contributor.contributions} contributions</p>
-          </div>
-        </a>
+        <ContributorCard key={contributor.id} contributor={contributor} />
       ))}
     </div>
   );

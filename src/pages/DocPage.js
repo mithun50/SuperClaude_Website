@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import DocCard from '../components/DocCard';
 import docsMap from '../docs-map.json';
 
 function DocPage() {
@@ -29,13 +29,7 @@ function DocPage() {
               <h3 className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</h3>
               <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                 {docs.map((doc) => (
-                  <Link
-                    key={doc.name}
-                    to={`/docs/${doc.category}/${doc.name}`}
-                    className="block p-6 border border-light-accent dark:border-dark-accent rounded-lg hover:bg-light-accent dark:hover:bg-dark-accent transition-colors duration-300"
-                  >
-                    <p className="text-xl font-semibold text-light-text dark:text-dark-text">{doc.title}</p>
-                  </Link>
+                  <DocCard key={doc.name} doc={doc} />
                 ))}
               </div>
             </div>
