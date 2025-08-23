@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
@@ -93,6 +94,7 @@ function DocViewerPage() {
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
               components={{
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || '');

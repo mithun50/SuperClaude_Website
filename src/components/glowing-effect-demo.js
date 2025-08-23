@@ -4,20 +4,12 @@ import { GlowingEffect } from "./ui/glowing-effect";
 import { cn } from "../lib/utils";
 import { Link } from "react-router-dom";
 
-const areas = [
-  "md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]",
-  "md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/5]",
-  "md:[grid-area:2/1/3/7] xl:[grid-area:1/5/3/8]",
-  "md:[grid-area:2/7/3/13] xl:[grid-area:1/8/2/13]",
-];
-
 export function GlowingEffectDemo({ features }) {
   return (
-    <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {features.map((feature, index) => (
         <GridItem
           key={feature.title}
-          area={areas[index]}
           icon={feature.icon}
           title={feature.title}
           description={feature.description}
@@ -29,7 +21,7 @@ export function GlowingEffectDemo({ features }) {
   );
 }
 
-const GridItem = ({ area, icon, title, description, link, isExternal }) => {
+const GridItem = ({ icon, title, description, link, isExternal }) => {
   const content = (
     <div className="relative h-full rounded-[1.25rem] border-[0.75px] border-border p-2 md:rounded-[1.5rem] md:p-3">
       <GlowingEffect
@@ -58,7 +50,7 @@ const GridItem = ({ area, icon, title, description, link, isExternal }) => {
     </div>
   );
 
-  const containerClassName = cn("min-h-[14rem] list-none", area);
+  const containerClassName = cn("min-h-[14rem] list-none");
 
   if (isExternal) {
     return (
