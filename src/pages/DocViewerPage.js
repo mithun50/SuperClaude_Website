@@ -95,8 +95,8 @@ function DocViewerPage() {
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">
-          <div className="markdown-body bg-secondary p-6 rounded-lg">
+        <main className="flex-1 bg-background">
+          <div className="markdown-body p-2 sm:p-6">
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
