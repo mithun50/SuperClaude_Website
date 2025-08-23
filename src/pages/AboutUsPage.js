@@ -1,5 +1,42 @@
 import React from 'react';
 
+import TeamMemberCard from '../components/TeamMemberCard';
+import InfoCard from '../components/InfoCard';
+
+const teamMembers = [
+  {
+    name: "NomenAK",
+    githubUrl: "https://github.com/NomenAK",
+    avatarUrl: "https://github.com/NomenAK.png",
+    role: "Owner & Maintainer of SuperClaude_Framework"
+  },
+  {
+    name: "Mithun Gowda B",
+    githubUrl: "https://github.com/mithun50",
+    avatarUrl: "https://github.com/mithun50.png",
+    role: "Collaborator, Maintainer & SuperClaude_Website Author"
+  }
+];
+
+const infoItems = [
+  {
+    title: "Open Source",
+    description: "The entire project is open source and released under the MIT License. You can view the source code, contribute to the project, and use it freely in your own work."
+  },
+  {
+    title: "Community Driven",
+    description: "SuperClaude is built by and for the community. We welcome contributions of all kinds, from bug reports to new features."
+  },
+  {
+    title: "Privacy Focused",
+    description: "SuperClaude runs 100% locally with no third-party servers or data collection. Your code and data stay on your machine."
+  },
+  {
+    title: "Constantly Improving",
+    description: "We are always working on improving SuperClaude. Check out our roadmap and contribute to the future of the project."
+  }
+];
+
 function AboutUsPage() {
   return (
     <div className="py-12">
@@ -16,56 +53,16 @@ function AboutUsPage() {
         <div className="mt-12">
           <h3 className="text-2xl font-bold text-center mb-8">Meet the Team</h3>
           <div className="grid gap-10 md:grid-cols-2">
-            <div className="flex flex-col items-center text-center">
-              <a href="https://github.com/NomenAK" target="_blank" rel="noopener noreferrer" className="group">
-                <img
-                  className="w-32 h-32 rounded-full mb-4 transition-transform duration-300 group-hover:scale-110"
-                  src="https://github.com/NomenAK.png"
-                  alt="NomenAK's avatar"
-                />
-                <h4 className="text-xl font-semibold group-hover:text-accent">NomenAK</h4>
-              </a>
-              <p className="text-light-text/80 dark:text-dark-text/80">Owner & Maintainer of SuperClaude_Framework</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <a href="https://github.com/mithun50" target="_blank" rel="noopener noreferrer" className="group">
-                <img
-                  className="w-32 h-32 rounded-full mb-4 transition-transform duration-300 group-hover:scale-110"
-                  src="https://github.com/mithun50.png"
-                  alt="Mithun Gowda B's avatar"
-                />
-                <h4 className="text-xl font-semibold group-hover:text-accent">Mithun Gowda B</h4>
-              </a>
-              <p className="text-light-text/80 dark:text-dark-text/80">Collaborator, Maintainer & SuperClaude_Website Author</p>
-            </div>
+            {teamMembers.map((member) => (
+              <TeamMemberCard key={member.name} {...member} />
+            ))}
           </div>
         </div>
 
         <div className="mt-20 grid gap-5 md:grid-cols-2">
-          <div className="p-6 border border-light-accent dark:border-dark-accent rounded-lg">
-            <h3 className="text-xl font-semibold">Open Source</h3>
-            <p className="mt-2 text-base text-light-text/80 dark:text-dark-text/80">
-              The entire project is open source and released under the MIT License. You can view the source code, contribute to the project, and use it freely in your own work.
-            </p>
-          </div>
-          <div className="p-6 border border-light-accent dark:border-dark-accent rounded-lg">
-            <h3 className="text-xl font-semibold">Community Driven</h3>
-            <p className="mt-2 text-base text-light-text/80 dark:text-dark-text/80">
-              SuperClaude is built by and for the community. We welcome contributions of all kinds, from bug reports to new features.
-            </p>
-          </div>
-          <div className="p-6 border border-light-accent dark:border-dark-accent rounded-lg">
-            <h3 className="text-xl font-semibold">Privacy Focused</h3>
-            <p className="mt-2 text-base text-light-text/80 dark:text-dark-text/80">
-              SuperClaude runs 100% locally with no third-party servers or data collection. Your code and data stay on your machine.
-            </p>
-          </div>
-          <div className="p-6 border border-light-accent dark:border-dark-accent rounded-lg">
-            <h3 className="text-xl font-semibold">Constantly Improving</h3>
-            <p className="mt-2 text-base text-light-text/80 dark:text-dark-text/80">
-              We are always working on improving SuperClaude. Check out our roadmap and contribute to the future of the project.
-            </p>
-          </div>
+          {infoItems.map((item) => (
+            <InfoCard key={item.title} {...item} />
+          ))}
         </div>
       </div>
     </div>
