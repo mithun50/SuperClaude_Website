@@ -96,7 +96,7 @@ function DocViewerPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1 bg-background">
-          <div className="markdown-body p-2 sm:p-6">
+          <div className="markdown-body p-2 sm:p-6" style={{ backgroundColor: 'transparent' }}>
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
