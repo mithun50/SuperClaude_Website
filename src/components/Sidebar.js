@@ -6,7 +6,7 @@ import { useSidebar } from '../context/SidebarContext';
 import { cn } from '../lib/utils';
 
 const Sidebar = () => {
-  const { isOpen, closeSidebar, toggleSidebar } = useSidebar();
+  const { isOpen, closeSidebar } = useSidebar();
 
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
