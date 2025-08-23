@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Card from '../components/Card';
+import { GlowingEffectDemo } from '../components/glowing-effect-demo';
 import { Heart, BookOpen, Users, Github, ArrowRight } from 'lucide-react';
 
 function HomePage() {
@@ -60,18 +60,8 @@ function HomePage() {
       </div>
 
       {/* Features Section */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 mb-20">
-        {features.map((feature, index) => (
-          <Card
-            key={index}
-            index={index}
-            title={feature.title}
-            description={feature.description}
-            link={feature.link}
-            isExternal={feature.isExternal}
-            icon={feature.icon}
-          />
-        ))}
+      <div className="mb-20">
+        <GlowingEffectDemo features={features} />
       </div>
 
       {/* Quick Start Section */}
