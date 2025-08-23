@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 // In-memory cache
 let cache = {
   data: null,
@@ -9,6 +7,7 @@ let cache = {
 const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
 exports.handler = async (event, context) => {
+  const fetch = (await import('node-fetch')).default;
   const now = Date.now();
 
   // Check if cache is still valid
