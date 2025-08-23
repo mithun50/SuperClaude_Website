@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ContributorCard from '../components/ContributorCard';
 
-const excludedContributors = ['mithun50', 'NomenAK'];
+const excludedContributors = ['mithun50', 'NomenAK', 'google-labs-jules[bot]'];
 
 function ContributorsPage() {
   const [superClaudeContributors, setSuperClaudeContributors] = useState([]);
