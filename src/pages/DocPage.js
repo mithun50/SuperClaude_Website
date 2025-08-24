@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import DocCard from '../components/DocCard';
 import { useSidebar } from '../context/SidebarContext';
 import docsMap from '../docs-map.json';
+import { GradientText } from '../components/ui/gradient-text';
 
 function DocPage() {
   const { openSidebar } = useSidebar();
@@ -45,9 +46,9 @@ function DocPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <main>
           <div className="text-center">
-            <h2 className="text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">
+            <GradientText className="text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">
               Documentation
-            </h2>
+            </GradientText>
             <p className="mt-4 max-w-2xl mx-auto text-xl text-light-text/80 dark:text-dark-text/80">
               Access all the guides and resources for SuperClaude v3.
             </p>
@@ -56,7 +57,7 @@ function DocPage() {
           <div className="mt-12">
             {Object.entries(groupedDocs).map(([category, docs]) => (
               <div key={category} className="mb-12">
-                <h3 className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</h3>
+                <GradientText className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</GradientText>
                 <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                   {docs.map((doc) => (
                     <DocCard key={doc.name} doc={doc} />
