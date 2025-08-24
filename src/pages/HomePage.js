@@ -61,7 +61,7 @@ function HomePage() {
         >
           SuperClaude Framework
         </motion.h1>
-        <motion.p
+        <motion.div
           initial={{ opacity: 0.5, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{
@@ -69,10 +69,11 @@ function HomePage() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground"
         >
-          A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
-        </motion.p>
+          <GradientText className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl">
+            A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
+          </GradientText>
+        </motion.div>
         <motion.div
           initial={{ opacity: 0.5, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}

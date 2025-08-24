@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { Sun, Moon, Menu, X, Home, FileText, Users, Info } from 'lucide-react';
 import { ThemeContext } from '../context/ThemeContext';
 import MenuButton from './MenuButton';
+import { GradientText } from './ui/gradient-text';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +32,7 @@ function Navbar() {
           <div className="flex items-center space-x-4">
             {isDocPage && <MenuButton />}
             <NavLink to="/" className="flex items-center space-x-2 text-foreground">
-              <span className="font-bold text-lg">SuperClaude Framework</span>
+              <GradientText className="font-bold text-lg">SuperClaude Framework</GradientText>
             </NavLink>
           </div>
           <div className="hidden md:flex items-center space-x-4">
