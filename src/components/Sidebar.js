@@ -35,8 +35,8 @@ const Sidebar = () => {
     <aside
       className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-300 ease-in-out flex flex-col",
-        "lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:flex-shrink-0 lg:w-64 lg:translate-x-0",
-        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        "lg:flex-shrink-0 lg:w-64",
+        isOpen ? "translate-x-0" : "-translate-x-full"
       )}
     >
       <div className="flex justify-between items-center p-4 lg:hidden flex-shrink-0">
@@ -45,7 +45,7 @@ const Sidebar = () => {
           <X size={20} />
         </button>
       </div>
-      <nav className="p-4 overflow-y-auto">
+      <nav className="p-4 overflow-y-auto lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]">
         {Object.entries(groupedDocs).map(([category, docs]) => (
           <div key={category} className="mb-4">
             <button

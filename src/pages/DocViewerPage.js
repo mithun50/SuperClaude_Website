@@ -94,7 +94,7 @@ function DocViewerPage() {
 
   return (
     <div className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-start gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
         <Sidebar />
         <main className="flex-1 bg-background min-w-0">
           <div
