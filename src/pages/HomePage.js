@@ -60,11 +60,11 @@ function HomePage() {
         >
           SuperClaude Framework
         </motion.h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-slate-400">
+        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground">
           A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
         </p>
         <div className="mt-10">
-          <a href="#quick-start" className="btn btn-neon text-slate-300">
+          <a href="#quick-start" className="btn btn-neon text-foreground">
             Get Started <ArrowRight className="inline-block ml-2" />
           </a>
         </div>
