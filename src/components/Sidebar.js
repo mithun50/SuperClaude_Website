@@ -16,7 +16,6 @@ const Sidebar = () => {
       setOpenCategories((prev) => ({ ...prev, [activeCategory]: true }));
     }
   }, [activeCategory]);
-
   const isDocPage = location.pathname.startsWith('/docs');
   if (!isDocPage) {
     return null;
