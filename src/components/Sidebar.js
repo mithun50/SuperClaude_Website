@@ -28,6 +28,7 @@ const Sidebar = () => {
       [category]: !prev[category],
     }));
   };
+  
 
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
