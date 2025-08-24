@@ -19,6 +19,15 @@
     --muted-foreground: #6b7280;
     --gradient-start: #3b82f6;
     --gradient-end: #8b5cf6;
+
+    /* github-markdown-css overrides */
+    --fgColor-default: var(--foreground);
+    --fgColor-muted: var(--secondary-foreground);
+    --fgColor-accent: var(--accent);
+    --bgColor-default: var(--background);
+    --bgColor-muted: var(--muted);
+    --borderColor-default: var(--border);
+    --borderColor-muted: var(--border);
   }
 
   .dark {
@@ -35,6 +44,15 @@
     --muted-foreground: #94a3b8;
     --gradient-start: #1e3a8a;
     --gradient-end: #5b21b6;
+
+    /* github-markdown-css overrides */
+    --fgColor-default: var(--foreground);
+    --fgColor-muted: var(--secondary-foreground);
+    --fgColor-accent: var(--accent);
+    --bgColor-default: var(--background);
+    --bgColor-muted: var(--muted);
+    --borderColor-default: var(--border);
+    --borderColor-muted: var(--border);
   }
 
   body {
@@ -97,8 +115,4 @@
     transform: scale(1.05);
   }
 
-  .markdown-body summary,
-  .markdown-body summary b {
-    color: var(--foreground);
-  }
 }
