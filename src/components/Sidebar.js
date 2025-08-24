@@ -10,17 +10,17 @@ const Sidebar = () => {
   const { category: activeCategory } = useParams();
   const [openCategories, setOpenCategories] = useState({});
   const location = useLocation();
-  const isDocPage = location.pathname.startsWith('/docs');
-
-  if (!isDocPage) {
-    return null;
-  }
 
   useEffect(() => {
     if (activeCategory) {
       setOpenCategories((prev) => ({ ...prev, [activeCategory]: true }));
     }
   }, [activeCategory]);
+
+  const isDocPage = location.pathname.startsWith('/docs');
+  if (!isDocPage) {
+    return null;
+  }
 
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
