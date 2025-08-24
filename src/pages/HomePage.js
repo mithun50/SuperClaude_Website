@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { LampContainer } from '../components/ui/lamp';
+import { GradientText } from '../components/ui/gradient-text';
 import { GlowingEffect } from '../components/ui/glowing-effect';
 import { GlowingEffectDemo } from '../components/glowing-effect-demo';
 import { Heart, BookOpen, Users, Github, ArrowRight } from 'lucide-react';
@@ -103,9 +104,9 @@ function HomePage() {
           inactiveZone={0.01}
           borderWidth={3}
         />
-        <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-center text-foreground">
+        <GradientText className="text-3xl font-extrabold tracking-tight sm:text-4xl text-center">
           SuperClaude Quick Start Guide
-        </h2>
+        </GradientText>
         <p className="mt-4 text-center italic text-secondary-foreground">
           Get up and running with SuperClaude in just a few minutes.
         </p>
@@ -149,7 +150,7 @@ function HomePage() {
        {/* What is SuperClaude Section */}
        <div className="py-12 sm:py-16 md:py-20">
         <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">What is SuperClaude?</h2>
+          <GradientText className="text-3xl sm:text-4xl font-extrabold tracking-tight">What is SuperClaude?</GradientText>
           <p className="mt-4 max-w-3xl mx-auto text-lg text-secondary-foreground">
             SuperClaude is a meta-programming framework that enhances Claude Code with a suite of powerful tools and features.
           </p>
@@ -164,7 +165,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">21 Slash Commands</h3>
+            <GradientText className="text-xl font-bold">21 Slash Commands</GradientText>
             <p className="mt-2 text-secondary-foreground">For workflow automation like brainstorming, implementation, and analysis.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -176,7 +177,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">14 Agents</h3>
+            <GradientText className="text-xl font-bold">14 Agents</GradientText>
             <p className="mt-2 text-secondary-foreground">Domain experts in architecture, security, frontend, and backend.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -188,7 +189,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">5 Behavioral Modes</h3>
+            <GradientText className="text-xl font-bold">5 Behavioral Modes</GradientText>
             <p className="mt-2 text-secondary-foreground">For different contexts like brainstorming, introspection, and orchestration.</p>
           </div>
         </div>
