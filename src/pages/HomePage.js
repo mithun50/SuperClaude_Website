@@ -60,14 +60,32 @@ function HomePage() {
         >
           SuperClaude Framework
         </motion.h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground">
+        <motion.p
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground"
+        >
           A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
-        </p>
-        <div className="mt-10">
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.7,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="mt-10"
+        >
           <a href="#quick-start" className="btn btn-neon text-foreground">
             Get Started <ArrowRight className="inline-block ml-2" />
           </a>
-        </div>
+        </motion.div>
       </LampContainer>
 
       {/* Features Section */}
