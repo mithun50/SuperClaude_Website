@@ -28,7 +28,8 @@ function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0 flex items-center">
+          <div className="flex items-center space-x-4">
+            {isDocPage && <MenuButton />}
             <NavLink to="/" className="flex items-center space-x-2 text-foreground">
               <span className="font-bold text-lg">SuperClaude Framework</span>
             </NavLink>
@@ -40,8 +41,7 @@ function Navbar() {
               </NavLink>
             ))}
           </div>
-          <div className="flex-shrink-0 flex items-center space-x-2">
-            {isDocPage && <MenuButton />}
+          <div className="flex items-center space-x-2">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full text-foreground hover:bg-secondary transition-colors duration-300"

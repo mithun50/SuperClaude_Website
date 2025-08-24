@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import DocCard from '../components/DocCard';
-import Sidebar from '../components/Sidebar';
 import { useSidebar } from '../context/SidebarContext';
 import docsMap from '../docs-map.json';
 
@@ -43,9 +42,8 @@ function DocPage() {
 
   return (
     <div className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
-        <Sidebar />
-        <main className="flex-1">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main>
           <div className="text-center">
             <h2 className="text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">
               Documentation

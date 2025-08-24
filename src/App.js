@@ -9,6 +9,7 @@ import AboutUsPage from './pages/AboutUsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 
 function AppContent() {
@@ -35,6 +36,7 @@ function App() {
       <Router>
         <>
           <Navbar />
+          <Sidebar />
           <div className="flex flex-col min-h-screen">
             <AppContent />
             <Footer />

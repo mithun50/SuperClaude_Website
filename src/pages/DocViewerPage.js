@@ -7,7 +7,6 @@ import rehypeRaw from 'rehype-raw';
 import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
-import Sidebar from '../components/Sidebar';
 import { useSidebar } from '../context/SidebarContext';
 import { ThemeContext } from '../context/ThemeContext';
 
@@ -94,9 +93,8 @@ function DocViewerPage() {
 
   return (
     <div className="py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-8">
-        <Sidebar />
-        <main className="flex-1 bg-background min-w-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <main className="bg-background min-w-0">
           <div
             className="markdown-body p-2 sm:p-6"
             data-theme={theme}
