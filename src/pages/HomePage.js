@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import { LampContainer } from '../components/ui/lamp';
 import { GlowingEffect } from '../components/ui/glowing-effect';
 import { GlowingEffectDemo } from '../components/glowing-effect-demo';
 import { Heart, BookOpen, Users, Github, ArrowRight } from 'lucide-react';
@@ -44,24 +46,32 @@ function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Hero Section */}
-      <div className="text-center py-12 sm:py-16 md:py-20">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">
+    <div>
+      <LampContainer>
+        <motion.h1
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+        >
           SuperClaude Framework
-        </h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground">
+        </motion.h1>
+        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-slate-400">
           A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
         </p>
         <div className="mt-10">
-          <a href="#quick-start" className="btn btn-neon text-foreground">
+          <a href="#quick-start" className="btn btn-neon text-slate-300">
             Get Started <ArrowRight className="inline-block ml-2" />
           </a>
         </div>
-      </div>
+      </LampContainer>
 
       {/* Features Section */}
-      <div className="mb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-20">
         <GlowingEffectDemo features={features} />
       </div>
 
