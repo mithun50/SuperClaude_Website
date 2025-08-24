@@ -37,7 +37,7 @@ function HomePage() {
     {
       title: "View on GitHub",
       description: "Check out the source code and contribute.",
-      link: "https://github.com/SuperClaude-Org/SuperClaude_Framework",
+      link: "https://github.com/NomenAK/SuperClaude",
       isExternal: true,
       icon: <Github size={24} className="text-accent" />
     }
@@ -51,7 +51,7 @@ function HomePage() {
           SuperClaude Framework
         </h1>
         <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground">
-          A meta-programming framework for Claude Code that enhances it with 21 slash commands, 13 AI specialists, and 6 behavioral modes.
+          A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
         </p>
         <div className="mt-10">
           <a href="#quick-start" className="btn btn-neon text-foreground">
@@ -148,7 +148,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">13 AI Specialists</h3>
+            <h3 className="text-xl font-bold text-foreground">14 Agents</h3>
             <p className="mt-2 text-secondary-foreground">Domain experts in architecture, security, frontend, and backend.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -160,7 +160,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">6 Behavioral Modes</h3>
+            <h3 className="text-xl font-bold text-foreground">5 Behavioral Modes</h3>
             <p className="mt-2 text-secondary-foreground">For different contexts like brainstorming, introspection, and orchestration.</p>
           </div>
         </div>

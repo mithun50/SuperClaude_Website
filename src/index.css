@@ -19,6 +19,7 @@
     --muted-foreground: #6b7280;
     --gradient-start: #3b82f6;
     --gradient-end: #8b5cf6;
+
   }
 
   .dark {
@@ -35,6 +36,7 @@
     --muted-foreground: #94a3b8;
     --gradient-start: #1e3a8a;
     --gradient-end: #5b21b6;
+
   }
 
   body {
@@ -64,15 +66,6 @@
 
   pre {
     @apply my-0;
-  }
-
-  .prose {
-    @apply max-w-none;
-  }
-  @screen sm {
-    .prose {
-      @apply max-w-prose;
-    }
   }
 }
 
@@ -104,5 +97,25 @@
   .btn-neon:hover::before {
     @apply blur-md;
     transform: scale(1.05);
+  }
+
+  .markdown-body[data-theme="light"] {
+    --fgColor-default: var(--foreground);
+    --fgColor-muted: var(--secondary-foreground);
+    --fgColor-accent: var(--accent);
+    --bgColor-default: var(--background);
+    --bgColor-muted: var(--muted);
+    --borderColor-default: var(--border);
+    --borderColor-muted: var(--border);
+  }
+
+  .markdown-body[data-theme="dark"] {
+    --fgColor-default: var(--foreground);
+    --fgColor-muted: var(--secondary-foreground);
+    --fgColor-accent: var(--accent);
+    --bgColor-default: var(--background);
+    --bgColor-muted: var(--muted);
+    --borderColor-default: var(--border);
+    --borderColor-muted: var(--border);
   }
 }

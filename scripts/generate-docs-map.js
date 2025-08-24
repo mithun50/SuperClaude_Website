@@ -4,28 +4,50 @@ const path = require('path');
 const docsDir = path.join(__dirname, '../public/docs');
 const outputFile = path.join(__dirname, '../src/docs-map.json');
 
-function getDocsMap(dir, category = '') {
-  const files = fs.readdirSync(dir);
+const categoryOrder = [
+  "Getting-Started",
+  "User-Guide",
+  "Reference",
+  "Developer-Guide",
+  "Templates"
+];
+
+function getDocsMap(dir) {
+  const categories = fs.readdirSync(dir).filter(file => {
+    const fullPath = path.join(dir, file);
+    return fs.statSync(fullPath).isDirectory();
+  });
+
+  // Sort categories based on the defined order
+  const sortedCategories = categories.sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a);
+    const indexB = categoryOrder.indexOf(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+
   let docsMap = [];
 
-  files.forEach(file => {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
+  sortedCategories.forEach(category => {
+    const categoryDir = path.join(dir, category);
+    const files = fs.readdirSync(categoryDir);
 
-    if (stat.isDirectory()) {
-      docsMap = docsMap.concat(getDocsMap(fullPath, file));
-    } else if (path.extname(file) === '.md') {
-      const content = fs.readFileSync(fullPath, 'utf8');
-      const titleMatch = content.match(/^#\s+(.*)/);
-      const title = titleMatch ? titleMatch[1] : path.basename(file, '.md');
+    files.forEach(file => {
+      if (path.extname(file) === '.md') {
+        const fullPath = path.join(categoryDir, file);
+        const content = fs.readFileSync(fullPath, 'utf8');
+        const titleMatch = content.match(/^#\s+(.*)/);
+        const title = titleMatch ? titleMatch[1] : path.basename(file, '.md');
 
-      docsMap.push({
-        category: category,
-        name: path.basename(file, '.md'),
-        title: title,
-        path: path.join('/docs', category, file).replace(/\\/g, '/'),
-      });
-    }
+        docsMap.push({
+          category: category,
+          name: path.basename(file, '.md'),
+          title: title,
+          path: path.join('/docs', category, file).replace(/\\/g, '/'),
+        });
+      }
+    });
   });
 
   return docsMap;
