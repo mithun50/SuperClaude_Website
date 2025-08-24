@@ -57,7 +57,7 @@ function HomePage() {
             duration: 0.8,
             ease: "easeInOut",
           }}
-          className="bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
+          className="bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]"
         >
           SuperClaude Framework
         </motion.h1>
@@ -70,7 +70,7 @@ function HomePage() {
             ease: "easeInOut",
           }}
         >
-          <GradientText className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl">
+          <GradientText className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]">
             A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
           </GradientText>
         </motion.div>
@@ -84,7 +84,7 @@ function HomePage() {
           }}
           className="mt-10"
         >
-          <a href="#quick-start" className="btn btn-neon text-foreground">
+          <a href="#quick-start" className="btn btn-neon text-foreground [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]">
             Get Started <ArrowRight className="inline-block ml-2" />
           </a>
         </motion.div>
