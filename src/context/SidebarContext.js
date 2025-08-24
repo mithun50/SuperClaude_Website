@@ -3,12 +3,7 @@ import React, { createContext, useState, useContext } from 'react';
 const SidebarContext = createContext();
 
 export const SidebarProvider = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia('(min-width: 1024px)').matches;
-    }
-    return false;
-  });
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const openSidebar = () => setIsOpen(true);
