@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import { LampContainer } from '../components/ui/lamp';
+import { GradientText } from '../components/ui/gradient-text';
 import { GlowingEffect } from '../components/ui/glowing-effect';
 import { GlowingEffectDemo } from '../components/glowing-effect-demo';
 import { Heart, BookOpen, Users, Github, ArrowRight } from 'lucide-react';
@@ -44,24 +47,51 @@ function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Hero Section */}
-      <div className="text-center py-12 sm:py-16 md:py-20">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-foreground">
+    <div>
+      <LampContainer>
+        <motion.h1
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]"
+        >
           SuperClaude Framework
-        </h1>
-        <p className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl text-secondary-foreground">
-          A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
-        </p>
-        <div className="mt-10">
-          <a href="#quick-start" className="btn btn-neon text-foreground">
+        </motion.h1>
+        <motion.div
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.5,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+        >
+          <GradientText className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]">
+            A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
+          </GradientText>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0.5, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: 0.7,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="mt-10"
+        >
+          <a href="#quick-start" className="btn btn-neon text-foreground [text-shadow:0px_2px_8px_rgba(0,0,0,0.5)]">
             Get Started <ArrowRight className="inline-block ml-2" />
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </LampContainer>
 
       {/* Features Section */}
-      <div className="mb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 mb-20">
         <GlowingEffectDemo features={features} />
       </div>
 
@@ -75,16 +105,16 @@ function HomePage() {
           inactiveZone={0.01}
           borderWidth={3}
         />
-        <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-center text-foreground">
+        <GradientText className="text-3xl font-extrabold tracking-tight sm:text-4xl text-center">
           SuperClaude Quick Start Guide
-        </h2>
+        </GradientText>
         <p className="mt-4 text-center italic text-secondary-foreground">
           Get up and running with SuperClaude in just a few minutes.
         </p>
 
         <div className="mt-12 grid md:grid-cols-2 gap-12 items-center">
           <div className="prose prose-invert">
-            <h3 className="text-2xl font-bold mb-4 text-foreground">1. Installation</h3>
+            <GradientText className="text-2xl font-bold mb-4">1. Installation</GradientText>
             <p className="text-secondary-foreground">
               Install the framework using pip. This single command sets up everything you need.
             </p>
@@ -98,7 +128,7 @@ function HomePage() {
             </div>
           </div>
           <div className="prose prose-invert">
-            <h3 className="text-2xl font-bold mb-4 text-foreground">2. First Commands</h3>
+            <GradientText className="text-2xl font-bold mb-4">2. First Commands</GradientText>
             <p className="text-secondary-foreground">
               After installation, you can start using the slash commands in Claude Code.
             </p>
@@ -121,7 +151,7 @@ function HomePage() {
        {/* What is SuperClaude Section */}
        <div className="py-12 sm:py-16 md:py-20">
         <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">What is SuperClaude?</h2>
+          <GradientText className="text-3xl sm:text-4xl font-extrabold tracking-tight">What is SuperClaude?</GradientText>
           <p className="mt-4 max-w-3xl mx-auto text-lg text-secondary-foreground">
             SuperClaude is a meta-programming framework that enhances Claude Code with a suite of powerful tools and features.
           </p>
@@ -136,7 +166,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">21 Slash Commands</h3>
+            <GradientText className="text-xl font-bold">21 Slash Commands</GradientText>
             <p className="mt-2 text-secondary-foreground">For workflow automation like brainstorming, implementation, and analysis.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -148,7 +178,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">14 Agents</h3>
+            <GradientText className="text-xl font-bold">14 Agents</GradientText>
             <p className="mt-2 text-secondary-foreground">Domain experts in architecture, security, frontend, and backend.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -160,7 +190,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <h3 className="text-xl font-bold text-foreground">5 Behavioral Modes</h3>
+            <GradientText className="text-xl font-bold">5 Behavioral Modes</GradientText>
             <p className="mt-2 text-secondary-foreground">For different contexts like brainstorming, introspection, and orchestration.</p>
           </div>
         </div>
