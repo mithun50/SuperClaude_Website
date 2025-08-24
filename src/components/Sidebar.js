@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { X, ChevronDown } from 'lucide-react';
 import docsMap from '../docs-map.json';
 import { useSidebar } from '../context/SidebarContext';
@@ -9,12 +9,18 @@ const Sidebar = () => {
   const { isOpen, closeSidebar } = useSidebar();
   const { category: activeCategory } = useParams();
   const [openCategories, setOpenCategories] = useState({});
+  const location = useLocation();
 
   useEffect(() => {
     if (activeCategory) {
       setOpenCategories((prev) => ({ ...prev, [activeCategory]: true }));
     }
   }, [activeCategory]);
+  
+  const isDocPage = location.pathname.startsWith('/docs');
+  if (!isDocPage) {
+    return null;
+  }
 
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
