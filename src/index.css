@@ -96,4 +96,9 @@
     @apply blur-md;
     transform: scale(1.05);
   }
+
+  .markdown-body summary,
+  .markdown-body summary b {
+    color: var(--foreground);
+  }
 }
