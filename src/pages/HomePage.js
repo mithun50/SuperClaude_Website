@@ -114,7 +114,7 @@ function HomePage() {
 
         <div className="mt-12 grid md:grid-cols-2 gap-12 items-center">
           <div className="prose prose-invert">
-            <h3 className="text-2xl font-bold mb-4 text-foreground">1. Installation</h3>
+            <GradientText className="text-2xl font-bold mb-4">1. Installation</GradientText>
             <p className="text-secondary-foreground">
               Install the framework using pip. This single command sets up everything you need.
             </p>
@@ -128,7 +128,7 @@ function HomePage() {
             </div>
           </div>
           <div className="prose prose-invert">
-            <h3 className="text-2xl font-bold mb-4 text-foreground">2. First Commands</h3>
+            <GradientText className="text-2xl font-bold mb-4">2. First Commands</GradientText>
             <p className="text-secondary-foreground">
               After installation, you can start using the slash commands in Claude Code.
             </p>
