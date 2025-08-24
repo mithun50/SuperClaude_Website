@@ -1,5 +1,6 @@
 import React from 'react';
 import { GlowingEffect } from './ui/glowing-effect';
+import { GradientText } from './ui/gradient-text';
 
 const InfoCard = ({ title, description }) => {
   return (
@@ -13,7 +14,7 @@ const InfoCard = ({ title, description }) => {
         borderWidth={3}
       />
       <div className="relative flex h-full flex-col justify-center overflow-hidden rounded-md border-[0.75px] bg-background p-6 shadow-sm">
-        <h3 className="text-xl font-semibold text-foreground">{title}</h3>
+        <GradientText className="text-xl font-semibold">{title}</GradientText>
         <p className="mt-2 text-base text-muted-foreground">{description}</p>
       </div>
     </div>
