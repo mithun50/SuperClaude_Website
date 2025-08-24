@@ -1,5 +1,6 @@
 import React from 'react';
 import { GlowingEffect } from './ui/glowing-effect';
+import { GradientText } from './ui/gradient-text';
 
 const TeamMemberCard = ({ name, githubUrl, avatarUrl, role }) => {
   return (
@@ -19,8 +20,8 @@ const TeamMemberCard = ({ name, githubUrl, avatarUrl, role }) => {
       />
       <div className="relative flex h-full flex-col items-center justify-center overflow-hidden rounded-md border-[0.75px] bg-background p-6 shadow-sm text-center">
         <img src={avatarUrl} alt={`${name}'s avatar`} className="w-32 h-32 rounded-full mb-4" />
-        <h4 className="text-xl font-semibold text-foreground">{name}</h4>
-        <p className="text-muted-foreground">{role}</p>
+        <GradientText className="text-xl font-semibold">{name}</GradientText>
+        <p className="text-muted-foreground mt-1">{role}</p>
       </div>
     </a>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { GlowingEffect } from "./ui/glowing-effect";
+import { GradientText } from "./ui/gradient-text";
 import { cn } from "../lib/utils";
 import { Link } from "react-router-dom";
 
@@ -38,9 +39,9 @@ const GridItem = ({ icon, title, description, link, isExternal }) => {
             {icon}
           </div>
           <div className="space-y-3">
-            <h3 className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance text-foreground">
+            <GradientText className="pt-0.5 text-xl leading-[1.375rem] font-semibold font-sans tracking-[-0.04em] md:text-2xl md:leading-[1.875rem] text-balance mx-0 w-full">
               {title}
-            </h3>
+            </GradientText>
             <p className="font-sans text-sm leading-[1.125rem] md:text-base md:leading-[1.375rem] text-muted-foreground">
               {description}
             </p>

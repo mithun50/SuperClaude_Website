@@ -16,7 +16,6 @@ const Sidebar = () => {
       setOpenCategories((prev) => ({ ...prev, [activeCategory]: true }));
     }
   }, [activeCategory]);
-  
   const isDocPage = location.pathname.startsWith('/docs');
   if (!isDocPage) {
     return null;
@@ -28,7 +27,6 @@ const Sidebar = () => {
       [category]: !prev[category],
     }));
   };
-  
 
   const groupedDocs = docsMap.reduce((acc, doc) => {
     if (!acc[doc.category]) {
