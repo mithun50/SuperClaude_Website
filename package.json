@@ -25,8 +25,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "node scripts/generate-docs-map.js",
-    "prebuild": "node scripts/generate-docs-map.js",
+    "prestart": "node scripts/fetch-docs.mjs && node scripts/generate-docs-map.js",
+    "prebuild": "node scripts/fetch-docs.mjs && node scripts/generate-docs-map.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
