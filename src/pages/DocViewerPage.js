@@ -21,13 +21,21 @@ function DocViewerPage() {
   const touchStartRef = useRef(null);
 
   const resolvePath = (base, relative) => {
+    if (relative.startsWith('/')) {
+      // Assuming absolute paths in markdown are relative to the /docs root
+      return `/docs${relative}`;
+    }
+
     const stack = base.split('/');
     stack.pop(); // remove current file name
+
     const parts = relative.split('/');
     for (const part of parts) {
       if (part === '.') continue;
       if (part === '..') {
-        stack.pop();
+        if (stack.length > 0) {
+          stack.pop();
+        }
       } else {
         stack.push(part);
       }
