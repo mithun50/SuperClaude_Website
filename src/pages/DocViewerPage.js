@@ -20,15 +20,14 @@ function DocViewerPage() {
   const { theme } = useContext(ThemeContext);
   const touchStartRef = useRef(null);
 
+  // ✅ Resolve relative paths for markdown links
   const resolvePath = (base, relative) => {
     if (relative.startsWith('/')) {
-      // Assuming absolute paths in markdown are relative to the /docs root
+      // Absolute path relative to /docs
       return `/docs${relative}`;
     }
-
     const stack = base.split('/');
     stack.pop(); // remove current file name
-
     const parts = relative.split('/');
     for (const part of parts) {
       if (part === '.') continue;
@@ -43,35 +42,33 @@ function DocViewerPage() {
     return stack.join('/');
   };
 
+  // ✅ Apply theme to HTML root
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', theme);
   }, [theme]);
 
+  // ✅ Mobile swipe gesture to open sidebar
   useEffect(() => {
     const handleTouchStart = (e) => {
       touchStartRef.current = e.touches[0].clientX;
     };
-
     const handleTouchEnd = (e) => {
-      if (touchStartRef.current === null) {
-        return;
-      }
+      if (touchStartRef.current === null) return;
       const touchEnd = e.changedTouches[0].clientX;
       if (touchStartRef.current < 50 && touchEnd - touchStartRef.current > 50) {
         openSidebar();
       }
       touchStartRef.current = null;
     };
-
     window.addEventListener('touchstart', handleTouchStart);
     window.addEventListener('touchend', handleTouchEnd);
-
     return () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [openSidebar]);
 
+  // ✅ Scroll to anchor when hash changes
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.substring(1);
@@ -84,12 +81,12 @@ function DocViewerPage() {
     }
   }, [location]);
 
+  // ✅ Fetch markdown for current doc
   useEffect(() => {
     const currentDoc = docsMap.find(
       (d) => d.category === category && d.name === file
     );
     setDoc(currentDoc);
-
     if (currentDoc) {
       fetch(currentDoc.path)
         .then((response) => response.text())
@@ -146,26 +143,31 @@ function DocViewerPage() {
                     </code>
                   );
                 },
+
                 a({ node, children, ...props }) {
                   const { href } = props;
 
-                  // Case 1: Anchor link (same page)
+                  // ✅ Case 1: Same page anchor
                   if (href && href.startsWith('#')) {
                     return <a {...props}>{children}</a>;
                   }
 
-                  // Case 2: Markdown link to another doc
+                  // ✅ Case 2: Markdown doc link
                   if (href && href.includes('.md')) {
-                    const currentDocInMap = docsMap.find(d => d.category === category && d.name === file);
+                    const currentDocInMap = docsMap.find(
+                      (d) => d.category === category && d.name === file
+                    );
                     if (currentDocInMap) {
                       const [path, hash] = href.split('#');
                       const resolvedPath = resolvePath(currentDocInMap.path, path);
 
-                      // Remove .md extension for comparison
+                      // Remove .md extension
                       const cleanedPath = resolvedPath.replace(/\.md$/, '');
 
                       // Find linked doc in docsMap
-                      const linkedDoc = docsMap.find(d => d.path.replace(/\.md$/, '') === cleanedPath);
+                      const linkedDoc = docsMap.find(
+                        (d) => d.path.replace(/\.md$/, '') === cleanedPath
+                      );
 
                       if (linkedDoc) {
                         const to = hash
@@ -176,8 +178,12 @@ function DocViewerPage() {
                     }
                   }
 
-                  // Default case: External link
-                  return <a {...props} target="_blank" rel="noopener noreferrer">{children}</a>;
+                  // ✅ Default: External link
+                  return (
+                    <a {...props} target="_blank" rel="noopener noreferrer">
+                      {children}
+                    </a>
+                  );
                 },
               }}
             />
@@ -189,5 +195,4 @@ function DocViewerPage() {
 }
 
 export default DocViewerPage;
-
-    
+        
