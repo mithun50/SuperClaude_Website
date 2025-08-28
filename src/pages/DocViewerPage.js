@@ -20,6 +20,21 @@ function DocViewerPage() {
   const { theme } = useContext(ThemeContext);
   const touchStartRef = useRef(null);
 
+  const resolvePath = (base, relative) => {
+    const stack = base.split('/');
+    stack.pop(); // remove current file name
+    const parts = relative.split('/');
+    for (const part of parts) {
+      if (part === '.') continue;
+      if (part === '..') {
+        stack.pop();
+      } else {
+        stack.push(part);
+      }
+    }
+    return stack.join('/');
+  };
+
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', theme);
   }, [theme]);
@@ -129,18 +144,21 @@ function DocViewerPage() {
                     return <a {...props}>{children}</a>;
                   }
                   if (href && href.includes('.md')) {
-                    const [path, hash] = href.split('#');
-                    const fileName = path.split('/').pop().replace('.md', '');
-                    const linkedDoc = docsMap.find(d => d.name === fileName);
+                    const currentDocInMap = docsMap.find(d => d.category === category && d.name === file);
+                    if (currentDocInMap) {
+                      const [path, hash] = href.split('#');
+                      const resolvedPath = resolvePath(currentDocInMap.path, path);
+                      const linkedDoc = docsMap.find(d => d.path === resolvedPath);
 
-                    if (linkedDoc) {
-                      const to = hash
-                        ? `/docs/${linkedDoc.category}/${linkedDoc.name}#${hash}`
-                        : `/docs/${linkedDoc.category}/${linkedDoc.name}`;
-                      return <Link to={to} {...props}>{children}</Link>;
+                      if (linkedDoc) {
+                        const to = hash
+                          ? `/docs/${linkedDoc.category}/${linkedDoc.name}#${hash}`
+                          : `/docs/${linkedDoc.category}/${linkedDoc.name}`;
+                        return <Link to={to} {...props}>{children}</Link>;
+                      }
                     }
                   }
-                  // For all other links, or if .md link not found in docsMap
+                  // For all other links, or if resolution fails
                   return <a {...props} target="_blank" rel="noopener noreferrer">{children}</a>;
                 },
               }}
