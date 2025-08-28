@@ -50,14 +50,14 @@ function DocPage() {
               Documentation
             </GradientText>
             <p className="mt-4 max-w-2xl mx-auto text-xl text-light-text/80 dark:text-dark-text/80">
-              Access all the guides and resources for SuperClaude v3.
+              Access all the guides and resources for SuperClaude v4.
             </p>
           </div>
 
           <div className="mt-12">
             {Object.entries(groupedDocs).map(([category, docs]) => (
               <div key={category} className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</h2>
+                <GradientText className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</GradientText>
                 <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
                   {docs.map((doc) => (
                     <DocCard key={doc.name} doc={doc} />
