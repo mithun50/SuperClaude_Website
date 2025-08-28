@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import 'github-markdown-css/github-markdown.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSlug from 'rehype-slug'; // Add this plugin
 import docsMap from '../docs-map.json';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
@@ -44,6 +45,32 @@ function DocViewerPage() {
     return stack.join('/');
   };
 
+  // Function to handle scrolling to hash
+  const scrollToHash = (hash) => {
+    if (!hash) return;
+
+    const id = hash.startsWith('#') ? hash.substring(1) : hash;
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+      // If element not found, try again after a short delay (for dynamic content)
+      setTimeout(() => {
+        const retryElement = document.getElementById(id);
+        if (retryElement) {
+          retryElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 500);
+    }
+  };
+
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', theme);
   }, [theme]);
@@ -73,17 +100,15 @@ function DocViewerPage() {
     };
   }, [openSidebar]);
 
+  // Handle hash scrolling when location or markdown content changes
   useEffect(() => {
-    if (location.hash) {
-      const id = location.hash.substring(1);
+    if (location.hash && markdown) {
+      // Wait for markdown to render before scrolling
       setTimeout(() => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        scrollToHash(location.hash);
       }, 100);
     }
-  }, [location]);
+  }, [location.hash, markdown]);
 
   useEffect(() => {
     const currentDoc = docsMap.find(
@@ -127,8 +152,39 @@ function DocViewerPage() {
             <ReactMarkdown
               children={markdown}
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
+              rehypePlugins={[rehypeRaw, rehypeSlug]} // Add rehypeSlug for automatic heading IDs
               components={{
+                // Add custom heading components to ensure IDs are generated
+                h1: ({ node, children, ...props }) => (
+                  <h1 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h1>
+                ),
+                h2: ({ node, children, ...props }) => (
+                  <h2 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h2>
+                ),
+                h3: ({ node, children, ...props }) => (
+                  <h3 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h3>
+                ),
+                h4: ({ node, children, ...props }) => (
+                  <h4 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h4>
+                ),
+                h5: ({ node, children, ...props }) => (
+                  <h5 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h5>
+                ),
+                h6: ({ node, children, ...props }) => (
+                  <h6 {...props} id={props.id || children.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}>
+                    {children}
+                  </h6>
+                ),
                 code({ node, inline, className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || '');
                   if (!inline && match) {
@@ -152,7 +208,20 @@ function DocViewerPage() {
 
                   // 1. Handle internal anchor links with smooth scrolling
                   if (href && href.startsWith('#')) {
-                    return <HashLink smooth to={href} {...props}>{children}</HashLink>;
+                    return (
+                      <a
+                        {...props}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          scrollToHash(href);
+                          // Update URL without triggering a page reload
+                          window.history.pushState(null, '', href);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {children}
+                      </a>
+                    );
                   }
 
                   // 2. Handle links to other markdown documents
