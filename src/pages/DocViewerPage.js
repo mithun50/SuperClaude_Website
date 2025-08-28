@@ -124,24 +124,24 @@ function DocViewerPage() {
                   );
                 },
                 a({ node, children, ...props }) {
-                  const href = props.href;
+                  const { href } = props;
+                  if (href && href.startsWith('#')) {
+                    return <a {...props}>{children}</a>;
+                  }
                   if (href && href.includes('.md')) {
                     const [path, hash] = href.split('#');
-                    const newName = path.split('/').pop().replace('.md', '');
-                    const to = hash
-                      ? `/docs/${category}/${newName}#${hash}`
-                      : `/docs/${category}/${newName}`;
-                    return (
-                      <Link to={to} {...props}>
-                        {children}
-                      </Link>
-                    );
+                    const fileName = path.split('/').pop().replace('.md', '');
+                    const linkedDoc = docsMap.find(d => d.name === fileName);
+
+                    if (linkedDoc) {
+                      const to = hash
+                        ? `/docs/${linkedDoc.category}/${linkedDoc.name}#${hash}`
+                        : `/docs/${linkedDoc.category}/${linkedDoc.name}`;
+                      return <Link to={to} {...props}>{children}</Link>;
+                    }
                   }
-                  return (
-                    <a {...props} target="_blank" rel="noopener noreferrer">
-                      {children}
-                    </a>
-                  );
+                  // For all other links, or if .md link not found in docsMap
+                  return <a {...props} target="_blank" rel="noopener noreferrer">{children}</a>;
                 },
               }}
             />
