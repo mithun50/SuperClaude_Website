@@ -8,7 +8,7 @@ const MenuButton = () => {
   return (
     <button
       onClick={toggleSidebar}
-      className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted"
+      className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted lg:hidden"
       aria-label="Toggle sidebar"
     >
       <Library />

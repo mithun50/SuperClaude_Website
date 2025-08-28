@@ -40,13 +40,13 @@ const Sidebar = () => {
     <>
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-300 ease-in-out flex flex-col",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-300 ease-in-out flex flex-col lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex justify-between items-center p-4 flex-shrink-0">
           <h3 className="text-lg font-semibold">Documentation Menu</h3>
-          <button onClick={closeSidebar} className="p-2 rounded-md hover:bg-muted">
+          <button onClick={closeSidebar} className="p-2 rounded-md hover:bg-muted lg:hidden">
             <X size={20} />
           </button>
         </div>
@@ -95,7 +95,7 @@ const Sidebar = () => {
     </aside>
     {isOpen && (
       <div
-        className="fixed inset-0 bg-black opacity-50 z-40"
+        className="fixed inset-0 bg-black opacity-50 z-40 lg:hidden"
         onClick={closeSidebar}
       ></div>
     )}

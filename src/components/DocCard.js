@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { GlowingEffect } from './ui/glowing-effect';
-import { GradientText } from './ui/gradient-text';
 
 const DocCard = ({ doc }) => {
   return (
@@ -18,7 +17,7 @@ const DocCard = ({ doc }) => {
         borderWidth={3}
       />
       <div className="relative flex h-full items-center justify-center overflow-hidden rounded-md border-[0.75px] bg-background p-6 shadow-sm">
-        <GradientText className="text-xl font-semibold">{doc.title}</GradientText>
+        <div className="text-xl font-semibold text-black dark:text-white">{doc.title.charAt(0).toUpperCase() + doc.title.slice(1)}</div>
       </div>
     </Link>
   );

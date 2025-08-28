@@ -14,8 +14,9 @@ import Footer from './components/Footer';
 
 function AppContent() {
   const location = useLocation();
+  const isDocPage = location.pathname.startsWith('/docs');
   return (
-    <main className="flex-grow w-full pt-24 pb-8">
+    <main className={`flex-grow w-full pt-24 pb-8 ${isDocPage ? 'lg:pl-64' : ''}`}>
       <div key={location.pathname}>
         <Routes location={location}>
           <Route path="/" element={<HomePage />} />
