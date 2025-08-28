@@ -148,15 +148,24 @@ function DocViewerPage() {
                 },
                 a({ node, children, ...props }) {
                   const { href } = props;
+
+                  // Case 1: Anchor link (same page)
                   if (href && href.startsWith('#')) {
                     return <a {...props}>{children}</a>;
                   }
+
+                  // Case 2: Markdown link to another doc
                   if (href && href.includes('.md')) {
                     const currentDocInMap = docsMap.find(d => d.category === category && d.name === file);
                     if (currentDocInMap) {
                       const [path, hash] = href.split('#');
                       const resolvedPath = resolvePath(currentDocInMap.path, path);
-                      const linkedDoc = docsMap.find(d => d.path === resolvedPath);
+
+                      // Remove .md extension for comparison
+                      const cleanedPath = resolvedPath.replace(/\.md$/, '');
+
+                      // Find linked doc in docsMap
+                      const linkedDoc = docsMap.find(d => d.path.replace(/\.md$/, '') === cleanedPath);
 
                       if (linkedDoc) {
                         const to = hash
@@ -166,7 +175,8 @@ function DocViewerPage() {
                       }
                     }
                   }
-                  // For all other links, or if resolution fails
+
+                  // Default case: External link
                   return <a {...props} target="_blank" rel="noopener noreferrer">{children}</a>;
                 },
               }}
