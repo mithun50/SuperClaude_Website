@@ -56,9 +56,9 @@ function DocPage() {
 
           <div className="mt-12">
             {Object.entries(groupedDocs).map(([category, docs]) => (
-              <div key={category} className="mb-12">
+              <div key={category} className="mb-12 text-center">
                 <GradientText className="text-2xl font-bold mb-4">{category.replace(/[-_]/g, ' ')}</GradientText>
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 justify-center">
                   {docs.map((doc) => (
                     <DocCard key={doc.name} doc={doc} />
                   ))}
