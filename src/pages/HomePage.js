@@ -40,7 +40,7 @@ function HomePage() {
     {
       title: "View on GitHub",
       description: "Check out the source code and contribute.",
-      link: "https://github.com/NomenAK/SuperClaude",
+      link: "https://github.com/SuperClaude-Org/SuperClaude_Framework",
       isExternal: true,
       icon: <Github size={24} className="text-accent" />
     }
@@ -71,7 +71,7 @@ function HomePage() {
           }}
         >
           <GradientText className="mt-4 max-w-3xl mx-auto text-lg sm:text-xl">
-            A meta-programming framework for Claude Code that enhances it with 21 slash commands, 14 agents, and 5 behavioral modes.
+            A meta-programming framework for Claude Code that enhances it with 22 slash commands, 14 agents, and 6 behavioral modes.
           </GradientText>
         </motion.div>
         <motion.div
@@ -166,7 +166,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <GradientText className="text-xl font-bold">21 Slash Commands</GradientText>
+            <GradientText className="text-xl font-bold">22 Slash Commands</GradientText>
             <p className="mt-2 text-secondary-foreground">For workflow automation like brainstorming, implementation, and analysis.</p>
           </div>
           <div className="relative bg-background/80 backdrop-blur-lg border border-border p-6 rounded-xl">
@@ -190,7 +190,7 @@ function HomePage() {
               inactiveZone={0.01}
               borderWidth={3}
             />
-            <GradientText className="text-xl font-bold">5 Behavioral Modes</GradientText>
+            <GradientText className="text-xl font-bold">6 Behavioral Modes</GradientText>
             <p className="mt-2 text-secondary-foreground">For different contexts like brainstorming, introspection, and orchestration.</p>
           </div>
         </div>
