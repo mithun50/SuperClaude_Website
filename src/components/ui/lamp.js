@@ -20,8 +20,8 @@ export const LampContainer = ({
     >
       <div className="relative flex w-full flex-1 scale-y-125 items-center justify-center isolate z-0 ">
         <motion.div
-          initial={{ opacity: 0.5, width: "10rem" }}
-          whileInView={{ opacity: 1, width: "30rem" }}
+          initial={{ opacity: 0.5 }}
+          whileInView={{ opacity: 1 }}
           transition={{
             delay: 0.3,
             duration: 0.8,
@@ -39,8 +39,8 @@ export const LampContainer = ({
           <div className={cn("absolute w-20 md:w-40 h-[100%] left-0 bottom-0 z-20 [mask-image:linear-gradient(to_right,white,transparent)]", theme === 'dark' ? 'bg-slate-950' : 'bg-gray-100')}/>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0.5, width: "10rem" }}
-          whileInView={{ opacity: 1, width: "30rem" }}
+          initial={{ opacity: 0.5 }}
+          whileInView={{ opacity: 1 }}
           transition={{
             delay: 0.3,
             duration: 0.8,
@@ -61,8 +61,8 @@ export const LampContainer = ({
         <div className="absolute top-1/2 z-30 h-24 md:h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
         <div className={cn("absolute inset-auto z-30 h-24 md:h-36 w-full max-w-xs md:max-w-[30rem] lg:max-w-[40rem] xl:max-w-[50rem] 2xl:max-w-[60rem] -translate-y-1/2 rounded-full opacity-50 blur-2xl md:blur-3xl", theme === 'dark' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-yellow-400 to-orange-500')}></div>
         <motion.div
-          initial={{ width: "4rem" }}
-          whileInView={{ width: "12rem" }}
+          initial={{ opacity: 0.5 }}
+          whileInView={{ opacity: 1 }}
           transition={{
             delay: 0.3,
             duration: 0.8,
@@ -71,8 +71,8 @@ export const LampContainer = ({
           className={cn("absolute inset-auto z-10 h-24 md:h-36 w-32 md:w-64 -translate-y-[2rem] rounded-full blur-xl md:blur-2xl", theme === 'dark' ? 'bg-gradient-to-r from-cyan-400 to-blue-500' : 'bg-gradient-to-r from-yellow-300 to-orange-400')}
         ></motion.div>
         <motion.div
-          initial={{ width: "10rem" }}
-          whileInView={{ width: "25rem" }}
+          initial={{ opacity: 0.5 }}
+          whileInView={{ opacity: 1 }}
           transition={{
             delay: 0.3,
             duration: 0.8,
