@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { SidebarProvider } from './context/SidebarContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import HomePage from './pages/HomePage';
 import DocPage from './pages/DocPage';
 import DocViewerPage from './pages/DocViewerPage';
@@ -33,18 +34,20 @@ function AppContent() {
 
 function App() {
   return (
-    <SidebarProvider>
-      <Router>
-        <>
-          <Navbar />
-          <Sidebar />
-          <div className="flex flex-col min-h-screen">
-            <AppContent />
-            <Footer />
-          </div>
-        </>
-      </Router>
-    </SidebarProvider>
+    <ErrorBoundary>
+      <SidebarProvider>
+        <Router>
+          <>
+            <Navbar />
+            <Sidebar />
+            <div className="flex flex-col min-h-screen">
+              <AppContent />
+              <Footer />
+            </div>
+          </>
+        </Router>
+      </SidebarProvider>
+    </ErrorBoundary>
   );
 }
 
