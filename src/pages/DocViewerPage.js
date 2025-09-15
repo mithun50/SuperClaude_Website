@@ -1,139 +1,75 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import ReactMarkdown from 'react-markdown';
 import 'github-markdown-css/github-markdown.css';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import rehypeSlug from 'rehype-slug'; // Add this plugin
-import docsMap from '../docs-map.json';
+import rehypeSlug from 'rehype-slug';
 import CodeBlock from '../components/CodeBlock';
 import NotFoundPage from './NotFoundPage';
 import { useSidebar } from '../context/SidebarContext';
 import { ThemeContext } from '../context/ThemeContext';
+import { useDocumentationLoader } from '../hooks/useDocumentationLoader';
+import { useScrollToHash } from '../hooks/useScrollToHash';
+import { useTouchGestures } from '../hooks/useTouchGestures';
+import { resolveMarkdownLink } from '../utils/linkResolver';
 
 function DocViewerPage() {
   const { category, file } = useParams();
-  const [markdown, setMarkdown] = useState('');
-  const [doc, setDoc] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const location = useLocation();
   const { openSidebar } = useSidebar();
   const { theme } = useContext(ThemeContext);
-  const touchStartRef = useRef(null);
+  
+  // Custom hooks
+  const { markdown, doc, loading, error } = useDocumentationLoader(category, file);
+  const { scrollToHash } = useScrollToHash(markdown);
+  useTouchGestures(openSidebar);
 
-  const resolvePath = (base, relative) => {
-    if (relative.startsWith('/')) {
-      // Assuming absolute paths in markdown are relative to the /docs root
-      return `/docs${relative}`;
-    }
-
-    const stack = base.split('/');
-    stack.pop(); // remove current file name
-
-    const parts = relative.split('/');
-    for (const part of parts) {
-      if (part === '.') continue;
-      if (part === '..') {
-        if (stack.length > 0) {
-          stack.pop();
-        }
-      } else {
-        stack.push(part);
-      }
-    }
-    return stack.join('/');
-  };
-
-  // Function to handle scrolling to hash
-  const scrollToHash = (hash) => {
-    if (!hash) return;
-
-    const id = hash.startsWith('#') ? hash.substring(1) : hash;
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    } else {
-      // If element not found, try again after a short delay (for dynamic content)
-      setTimeout(() => {
-        const retryElement = document.getElementById(id);
-        if (retryElement) {
-          retryElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }, 500);
-    }
-  };
 
   useEffect(() => {
     document.documentElement.setAttribute('data-color-mode', theme);
   }, [theme]);
 
-  useEffect(() => {
-    const handleTouchStart = (e) => {
-      touchStartRef.current = e.touches[0].clientX;
-    };
-
-    const handleTouchEnd = (e) => {
-      if (touchStartRef.current === null) {
-        return;
-      }
-      const touchEnd = e.changedTouches[0].clientX;
-      if (touchStartRef.current < 50 && touchEnd - touchStartRef.current > 50) {
-        openSidebar();
-      }
-      touchStartRef.current = null;
-    };
-
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [openSidebar]);
-
-  // Handle hash scrolling when location or markdown content changes
-  useEffect(() => {
-    if (location.hash && markdown) {
-      // Wait for markdown to render before scrolling
-      setTimeout(() => {
-        scrollToHash(location.hash);
-      }, 100);
-    }
-  }, [location.hash, markdown]);
-
-  useEffect(() => {
-    const currentDoc = docsMap.find(
-      (d) => d.category === category && d.name === file
-    );
-    setDoc(currentDoc);
-
-    if (currentDoc) {
-      fetch(currentDoc.path)
-        .then((response) => response.text())
-        .then((text) => {
-          setMarkdown(text);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error('Error fetching markdown:', error);
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [category, file]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center min-h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading documentation...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+              <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-foreground mb-2">Failed to load documentation</h1>
+            <p className="text-muted-foreground mb-6">
+              {error.message || 'An error occurred while loading the documentation.'}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!doc) {
@@ -225,23 +161,13 @@ function DocViewerPage() {
                   }
 
                   // 2. Handle links to other markdown documents
-                  if (href && href.includes('.md')) {
-                    const currentDocInMap = docsMap.find(d => d.category === category && d.name === file);
-                    if (currentDocInMap) {
-                      const [path, hash] = href.split('#');
-                      const resolvedPath = resolvePath(currentDocInMap.path, path);
-                      const cleanedPath = resolvedPath.replace(/\.md$/, '');
-                      const linkedDoc = docsMap.find(d => d.path.replace(/\.md$/, '') === cleanedPath);
-
-                      if (linkedDoc) {
-                        const to = `/docs/${linkedDoc.category}/${linkedDoc.name}`;
-                        // Use HashLink for smooth scrolling if there's a hash
-                        if (hash) {
-                          return <HashLink smooth to={`${to}#${hash}`} {...props}>{children}</HashLink>;
-                        }
-                        return <Link to={to} {...props}>{children}</Link>;
-                      }
+                  const markdownLink = resolveMarkdownLink(href, category, file);
+                  if (markdownLink) {
+                    // Use HashLink for smooth scrolling if there's a hash
+                    if (markdownLink.hash) {
+                      return <HashLink smooth to={`${markdownLink.to}#${markdownLink.hash}`} {...props}>{children}</HashLink>;
                     }
+                    return <Link to={markdownLink.to} {...props}>{children}</Link>;
                   }
 
                   // 3. Handle all other cases as external links

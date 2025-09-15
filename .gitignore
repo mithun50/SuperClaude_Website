@@ -24,3 +24,8 @@ yarn-error.log*
 
 # generated files
 /src/docs-map.json
+.docs-cache.json
+
+# Claude Code and Serena configuration
+CLAUDE.md
+.serena/
