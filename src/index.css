@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +19,6 @@
     --muted-foreground: #6b7280;
     --gradient-start: #3b82f6;
     --gradient-end: #8b5cf6;
-
   }
 
   .dark {
@@ -36,7 +35,6 @@
     --muted-foreground: #94a3b8;
     --gradient-start: #1e3a8a;
     --gradient-end: #5b21b6;
-
   }
 
   body {
@@ -44,17 +42,35 @@
     min-height: 100vh;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-bold text-foreground;
+    scroll-margin-top: 5rem;
   }
 
-  h1 { @apply text-4xl mb-6; }
-  h2 { @apply text-3xl mb-4; }
-  h3 { @apply text-2xl mb-3; }
-  h4 { @apply text-xl mb-2; }
-  h5 { @apply text-lg mb-2; }
+  h1 {
+    @apply text-4xl mb-6;
+  }
+  h2 {
+    @apply text-3xl mb-4;
+  }
+  h3 {
+    @apply text-2xl mb-3;
+  }
+  h4 {
+    @apply text-xl mb-2;
+  }
+  h5 {
+    @apply text-lg mb-2;
+  }
 
-  p { @apply mb-4 text-secondary-foreground; }
+  p {
+    @apply mb-4 text-secondary-foreground;
+  }
 
   a {
     @apply text-accent hover:underline;
@@ -88,9 +104,13 @@
   }
 
   .btn-neon::before {
-    content: '';
+    content: "";
     @apply absolute inset-0 -z-10 rounded-full;
-    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(
+      to right,
+      var(--gradient-start),
+      var(--gradient-end)
+    );
     transition: all 0.3s ease;
   }
 
@@ -117,5 +137,27 @@
     --bgColor-muted: var(--muted);
     --borderColor-default: var(--border);
     --borderColor-muted: var(--border);
+  }
+
+  /* Heading anchor link styles */
+  .anchor-link {
+    @apply ml-2 opacity-0 transition-opacity duration-200;
+    text-decoration: none;
+    font-weight: 400;
+  }
+
+  h1:hover .anchor-link,
+  h2:hover .anchor-link,
+  h3:hover .anchor-link,
+  h4:hover .anchor-link,
+  h5:hover .anchor-link,
+  h6:hover .anchor-link,
+  .anchor-link:focus {
+    @apply opacity-100;
+  }
+
+  .anchor-icon {
+    @apply text-accent;
+    font-size: 0.85em;
   }
 }
