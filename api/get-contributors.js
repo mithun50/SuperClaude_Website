@@ -6,20 +6,13 @@ let cache = {
 
 const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
 
-exports.handler = async (event, context) => {
-  const fetch = (await import('node-fetch')).default;
+export default async function handler(req, res) {
   const now = Date.now();
 
   // Check if cache is still valid
   if (cache.data && (now - cache.timestamp < CACHE_DURATION)) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(cache.data),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Cache-Status': 'hit',
-      },
-    };
+    res.setHeader('X-Cache-Status', 'hit');
+    return res.status(200).json(cache.data);
   }
 
   const excludedContributors = ['mithun50', 'NomenAK', 'google-labs-jules[bot]'];
@@ -29,20 +22,22 @@ exports.handler = async (event, context) => {
   ];
 
   try {
-    const contributorPromises = repos.map(repo => fetch(`https://api.github.com/repos/${repo}/contributors`));
+    const contributorPromises = repos.map(repo =>
+      fetch(`https://api.github.com/repos/${repo}/contributors`)
+    );
     const contributorResponses = await Promise.all(contributorPromises);
 
-    for (const res of contributorResponses) {
-      if (!res.ok) {
-        // If any GitHub API call fails, return an error
-        return {
-          statusCode: res.status,
-          body: JSON.stringify({ error: `Failed to fetch from GitHub: ${res.statusText}` }),
-        };
+    for (const response of contributorResponses) {
+      if (!response.ok) {
+        return res.status(response.status).json({
+          error: `Failed to fetch from GitHub: ${response.statusText}`,
+        });
       }
     }
 
-    const contributorData = await Promise.all(contributorResponses.map(res => res.json()));
+    const contributorData = await Promise.all(
+      contributorResponses.map(response => response.json())
+    );
 
     const allContributors = {};
     contributorData.forEach((repoContributors, index) => {
@@ -66,12 +61,12 @@ exports.handler = async (event, context) => {
     });
 
     const detailedContributorPromises = Object.values(allContributors).map(async (contributor) => {
-      const res = await fetch(`https://api.github.com/users/${contributor.login}`);
-      if (!res.ok) {
-        // Silently fail for individual user details, or handle error as needed
-        return contributor; // Return basic data if detail fetch fails
+      const response = await fetch(`https://api.github.com/users/${contributor.login}`);
+      if (!response.ok) {
+        // Return basic data if detail fetch fails
+        return contributor;
       }
-      const data = await res.json();
+      const data = await response.json();
       return {
         ...contributor,
         name: data.name || contributor.login,
@@ -84,8 +79,12 @@ exports.handler = async (event, context) => {
     contributors.sort((a, b) => b.contributions - a.contributions);
 
     const responseData = {
-        superClaudeContributors: contributors.filter(c => c.repos.includes('SuperClaude-Org/SuperClaude_Framework')),
-        websiteContributors: contributors.filter(c => c.repos.includes('SuperClaude-Org/SuperClaude_Website')),
+      superClaudeContributors: contributors.filter(c =>
+        c.repos.includes('SuperClaude-Org/SuperClaude_Framework')
+      ),
+      websiteContributors: contributors.filter(c =>
+        c.repos.includes('SuperClaude-Org/SuperClaude_Website')
+      ),
     };
 
     // Update cache
@@ -94,18 +93,9 @@ exports.handler = async (event, context) => {
       timestamp: now,
     };
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(responseData),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Cache-Status': 'miss',
-      },
-    };
+    res.setHeader('X-Cache-Status', 'miss');
+    return res.status(200).json(responseData);
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'An unexpected error occurred.' }),
-    };
+    return res.status(500).json({ error: 'An unexpected error occurred.' });
   }
-};
+}

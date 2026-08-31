@@ -29,3 +29,7 @@ yarn-error.log*
 # Claude Code and Serena configuration
 CLAUDE.md
 .serena/
+
+# Playwright test artifacts
+.playwright-mcp/
+*.png

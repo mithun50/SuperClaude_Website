@@ -30,6 +30,7 @@
   "scripts": {
     "prestart": "node scripts/fetch-docs.mjs && node scripts/generate-docs-map.js",
     "prebuild": "node scripts/fetch-docs.mjs && node scripts/generate-docs-map.js",
+    "dev:api": "node scripts/dev-api.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -52,5 +53,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
   }
 }

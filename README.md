@@ -41,9 +41,11 @@ This will open the app at [http://localhost:3000](http://localhost:3000) in your
 The project is a standard Create React App with a few additions. Here is an overview of the key directories:
 
 -   `.github/workflows/`: Contains the GitHub Actions workflow for deploying the website to GitHub Pages.
+-   `api/`: Contains Vercel serverless functions, such as `get-contributors.js`.
 -   `public/`: Contains the static files, `index.html`, and the extensive documentation for the SuperClaude Framework under `public/docs/`.
 -   `scripts/`: Contains utility scripts, such as `generate-docs-map.js`.
 -   `src/`: Contains the React application source code, including components, pages, and context.
+-   `vercel.json`: Vercel configuration for SPA routing rewrites.
 
 ## Contributing
 

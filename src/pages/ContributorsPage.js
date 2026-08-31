@@ -11,7 +11,7 @@ function ContributorsPage() {
   useEffect(() => {
     async function fetchContributors() {
       try {
-        const res = await fetch('/.netlify/functions/get-contributors');
+        const res = await fetch('/api/get-contributors');
         if (!res.ok) {
           throw new Error(`Failed to fetch contributors: ${res.statusText}`);
         }
