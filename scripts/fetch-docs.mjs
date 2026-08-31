@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const GITHUB_API_URL = 'https://api.github.com/repos/SuperClaude-Org/SuperClaude_Framework/contents/Docs';
 const DOCS_DIR = path.join(__dirname, '../public/docs');
+const TEMP_DOCS_DIR = path.join(__dirname, '../public/docs-tmp');
 const CACHE_FILE = path.join(__dirname, '../.docs-cache.json');
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -70,19 +71,22 @@ async function isCacheValid() {
   }
 }
 
-async function cleanDocsDir() {
-  console.log('Cleaning docs directory...');
-  for (const category of CATEGORIES) {
-    const categoryDir = path.join(DOCS_DIR, category);
-    try {
-      await fs.rm(categoryDir, { recursive: true, force: true });
-      console.log(`Removed directory: ${categoryDir}`);
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        console.error(`Error removing directory ${categoryDir}:`, error);
-      }
+async function cleanDir(dir) {
+  try {
+    await fs.rm(dir, { recursive: true, force: true });
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
     }
   }
+}
+
+async function swapDocs(tempDir) {
+  // Replace the real docs directory with the freshly-fetched temp directory.
+  // Only called after all fetches have succeeded, so existing docs are never
+  // destroyed by a failed GitHub API call.
+  await cleanDir(DOCS_DIR);
+  await fs.rename(tempDir, DOCS_DIR);
 }
 
 async function fetchAndSaveDocs(url, localPath, retryCount = 0) {
@@ -148,15 +152,21 @@ async function main() {
     }
 
     console.log('🔄 Fetching fresh documentation from GitHub...');
-    await cleanDocsDir();
+
+    // Fetch into a temp directory first so a failed fetch never destroys
+    // the existing docs.
+    await cleanDir(TEMP_DOCS_DIR);
 
     const fetchPromises = CATEGORIES.map(category => {
       const categoryUrl = `${GITHUB_API_URL}/${category}`;
-      const localPath = path.join(DOCS_DIR, category);
+      const localPath = path.join(TEMP_DOCS_DIR, category);
       return fetchAndSaveDocs(categoryUrl, localPath);
     });
 
     await Promise.all(fetchPromises);
+
+    // All fetches succeeded — now swap the temp dir into place.
+    await swapDocs(TEMP_DOCS_DIR);
 
     // Update cache timestamp
     const cache = await loadCache();
@@ -166,16 +176,24 @@ async function main() {
     console.log('✓ Documentation fetching complete');
   } catch (error) {
     console.error('❌ Documentation fetch failed:', error.message);
-    
-    // Try to use existing docs if available
+
+    // Clean up the temp directory from the failed attempt
+    await cleanDir(TEMP_DOCS_DIR);
+
+    // Fall back to existing docs if they're still on disk
     try {
       await fs.access(DOCS_DIR);
-      console.log('⚠️  Using existing cached documentation due to fetch failure');
-      return;
+      const contents = await fs.readdir(DOCS_DIR);
+      if (contents.length > 0) {
+        console.log('⚠️  Using existing cached documentation due to fetch failure');
+        return;
+      }
     } catch (accessError) {
-      console.error('💥 No cached documentation available and fetch failed');
-      throw error;
+      // Directory doesn't exist
     }
+
+    console.error('💥 No cached documentation available and fetch failed');
+    throw error;
   }
 }
 
